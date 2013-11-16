@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+    <entry-point class="com.deeep.duckhuntprototipe.client.GwtLauncher"/>
+    <set-configuration-property name="gdx.assetpath" value="../DuckHuntPrototipe-android/assets"/>
+    <inherits name="DuckHuntPrototipe"/>
+    <inherits name="com.badlogic.gdx.backends.gdx_backends_gwt"/>
+</module>
