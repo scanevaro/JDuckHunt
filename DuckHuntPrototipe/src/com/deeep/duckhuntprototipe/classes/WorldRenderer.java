@@ -51,7 +51,7 @@ public class WorldRenderer {
 
 			float side = duck.velocity.x < 0 ? -1 : 1;
 			if (side < 0)
-				batch.draw(Assets.duckFly.getKeyFrame(duck.stateTime),
+				batch.draw(Assets.duckFly.getKeyFrame(duck.stateTime, true),
 						duck.position.x + 0.5f + i, duck.position.y - 0.5f,
 						side * 1, 1);
 			else

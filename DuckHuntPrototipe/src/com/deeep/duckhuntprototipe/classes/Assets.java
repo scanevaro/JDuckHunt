@@ -39,8 +39,8 @@ public class Assets {
 				Gdx.files.internal("data"));
 		dog = items.findRegion("dogSmelling1");
 		duckFly = new Animation(0.2f,
-				((TextureRegion) items.findRegion("duckFly1")),
-				((TextureRegion) items.findRegion("duckfFly2")));
+				((TextureRegion) items.findRegion("duckFlyRight1")),
+				((TextureRegion) items.findRegion("duckFlyRight2")));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
 				Gdx.files.internal("data/font.ttf"));
