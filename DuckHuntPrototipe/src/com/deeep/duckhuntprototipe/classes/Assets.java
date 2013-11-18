@@ -23,10 +23,11 @@ public class Assets {
 
 	public static BitmapFont font;
 
-	public static Music music;
+	public static Music duckHunt;
 
-	public static Sound hitSound;
-	public static Sound missSound;
+	public static Sound reloading;
+	public static Sound shoot;
+	public static Sound ducks;
 
 	public static void load() {
 		background = new TextureAtlas(
@@ -47,14 +48,15 @@ public class Assets {
 		font = generator.generateFont(62);
 		generator.dispose();
 
-		// music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
-		// music.setLooping(true);
-		// music.setVolume(0.5f);
-		// if (Settings.soundEnabled)
-		// music.play();
-		//
-		// hitSound = Gdx.audio.newSound(Gdx.files.internal("data/hit.wav"));
-		// missSound = Gdx.audio.newSound(Gdx.files.internal("data/miss.wav"));
+		duckHunt = Gdx.audio.newMusic(Gdx.files.internal("data/DuckHunt.mp3"));
+		duckHunt.setLooping(false);
+		duckHunt.setVolume(0.5f);
+		if(Settings.soundEnabled)
+			duckHunt.play();
+		
+		reloading = Gdx.audio.newSound(Gdx.files.internal("data/reloading.wav"));
+		shoot = Gdx.audio.newSound(Gdx.files.internal("data/shoot.wav"));
+		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
 	}
 
 	public static void playSound(Sound sound) {

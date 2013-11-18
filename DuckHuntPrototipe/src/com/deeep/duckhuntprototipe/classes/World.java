@@ -9,9 +9,11 @@ import com.deeep.duckhuntprototipe.entities.Duck;
 public class World {
 
 	public interface WorldListener {
-		public void hit();
+		public void reload();
 
-		public void miss();
+		public void shoot();
+		
+		public void ducks();
 	}
 
 	public static final float WORLD_WIDTH = 15;

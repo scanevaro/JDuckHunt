@@ -37,15 +37,22 @@ public class GameScreen implements Screen {
 		touchPoint = new Vector3();
 		batcher = new SpriteBatch();
 		worldListener = new WorldListener() {
+
 			@Override
-			public void hit() {
-				Assets.playSound(Assets.hitSound);
+			public void reload() {
+				Assets.reloading.play();	
 			}
 
 			@Override
-			public void miss() {
-				Assets.playSound(Assets.missSound);
+			public void shoot() {
+				Assets.shoot.play();
 			}
+
+			@Override
+			public void ducks() {
+				Assets.ducks.play();
+			}
+			
 		};
 		world = new World(worldListener);
 		renderer = new WorldRenderer(batcher, world);
