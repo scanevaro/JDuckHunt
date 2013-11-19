@@ -77,7 +77,7 @@ public class GameScreen implements Screen {
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
 					0));
 
-			/***/
+			Assets.playSound(Assets.shoot);
 		}
 
 		ApplicationType appType = Gdx.app.getType();

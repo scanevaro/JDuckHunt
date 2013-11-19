@@ -18,6 +18,8 @@ public class Assets {
 	public static TextureRegion dog;
 	public static TextureRegion pause;
 	public static TextureRegion ready;
+	public static TextureRegion duckHit;
+	public static TextureRegion duckFall;
 
 	public static Animation duckFly;
 
@@ -42,6 +44,8 @@ public class Assets {
 		duckFly = new Animation(0.2f,
 				((TextureRegion) items.findRegion("duckFlyRight1")),
 				((TextureRegion) items.findRegion("duckFlyRight2")));
+		duckHit = items.findRegion("duckHit");
+		duckFall = items.findRegion("duckFall");
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
 				Gdx.files.internal("data/font.ttf"));
