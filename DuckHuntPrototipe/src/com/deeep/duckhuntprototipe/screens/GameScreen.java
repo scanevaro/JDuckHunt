@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 
 			@Override
 			public void reload() {
-				Assets.reloading.play();	
+				Assets.reloading.play();
 			}
 
 			@Override
@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
 			public void ducks() {
 				Assets.ducks.play();
 			}
-			
+
 		};
 		world = new World(worldListener);
 		renderer = new WorldRenderer(batcher, world);
@@ -74,13 +74,13 @@ public class GameScreen implements Screen {
 
 	private void updateRunning(float deltaTime) {
 		if (Gdx.input.justTouched()) {
+			// si quisiera usar algo del UI, está este touchPoint
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
 					0));
-
 			Assets.playSound(Assets.shoot);
 		}
 
-		ApplicationType appType = Gdx.app.getType();
+		// ApplicationType appType = Gdx.app.getType();
 
 		/*
 		 * Input code

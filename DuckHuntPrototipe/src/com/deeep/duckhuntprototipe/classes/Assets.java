@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class Assets {
-	public static TextureAtlas background;
 	public static TextureRegion backgroundRegion;
-
 	public static TextureAtlas items;
 	public static TextureRegion dog;
 	public static TextureRegion pause;
@@ -32,14 +30,9 @@ public class Assets {
 	public static Sound ducks;
 
 	public static void load() {
-		background = new TextureAtlas(
-				Gdx.files.internal("data/background.pack"),
-				Gdx.files.internal("data"));
-		backgroundRegion = background
-				.findRegion("Duck_Hunt_Wallpaper_by_jmorrison02766");
-
 		items = new TextureAtlas(Gdx.files.internal("data/items.pack"),
 				Gdx.files.internal("data"));
+		backgroundRegion = items.findRegion("background");
 		dog = items.findRegion("dogSmelling1");
 		duckFly = new Animation(0.2f,
 				((TextureRegion) items.findRegion("duckFlyRight1")),

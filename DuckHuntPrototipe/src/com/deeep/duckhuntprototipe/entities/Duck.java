@@ -14,7 +14,7 @@ public class Duck extends DynamicGameObject {
 	public static final float DUCK_WIDTH = 1;
 	public static final float DUCK_HEIGHT = 1;
 
-	int state;
+	public int state;
 	public float stateTime;
 	private Random rand;
 
@@ -60,7 +60,9 @@ public class Duck extends DynamicGameObject {
 	}
 
 	public void hit() {
-		/***/
+		velocity.set(0, 0);
+		state = Duck.DUCK_STATE_HIT;
+		stateTime = 0;
 	}
 
 	public void dead() {

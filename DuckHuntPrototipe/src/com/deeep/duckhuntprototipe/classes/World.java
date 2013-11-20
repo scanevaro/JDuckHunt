@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
 public class World {
@@ -12,7 +14,7 @@ public class World {
 		public void reload();
 
 		public void shoot();
-		
+
 		public void ducks();
 	}
 
@@ -26,24 +28,28 @@ public class World {
 
 	public int state;
 
+	Vector3 touchPoint;
+
 	public World(WorldListener listener) {
 		this.ducks = new ArrayList<Duck>();
 		this.listener = listener;
 		rand = new Random();
+		this.touchPoint = new Vector3();
 		generateLevel();
 
 		this.state = WORLD_STATE_RUNNING;
 	}
 
 	private void generateLevel() {
-		//for (int i = 0; i < 2; i++) {
-			Duck duck = new Duck(7, 5);
-			ducks.add(duck);
-		//}
+		// for (int i = 0; i < 2; i++) {
+		Duck duck = new Duck(7.5f, 5f);
+		ducks.add(duck);
+		// }
 	}
 
 	public void update(float deltaTime) {
 		updateDucks(deltaTime);
+		checkCollisions();
 	}
 
 	private void updateDucks(float deltaTime) {
@@ -59,6 +65,13 @@ public class World {
 	}
 
 	private void checkDuckCollision() {
-		/****/
+		for (int i = 0; i < ducks.size(); i++) {
+			Duck duck = ducks.get(i);
+			if (Gdx.input.justTouched()) {
+				if (duck.bounds.contains(touchPoint.x, touchPoint.y)) {
+					duck.hit();
+				}
+			}
+		}
 	}
 }

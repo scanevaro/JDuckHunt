@@ -1,8 +1,10 @@
 package com.deeep.duckhuntprototipe.classes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
 public class WorldRenderer {
@@ -23,6 +25,8 @@ public class WorldRenderer {
 
 	public void render() {
 		cam.update();
+		cam.unproject(world.touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
+				0));
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
 		renderObjects();
@@ -49,15 +53,25 @@ public class WorldRenderer {
 		for (int i = 0; i < len; i++) {
 			Duck duck = world.ducks.get(i);
 
-			float side = duck.velocity.x < 0 ? -1 : 1;
-			if (side < 0)
-				batch.draw(Assets.duckFly.getKeyFrame(duck.stateTime, true),
-						duck.position.x + 0.5f + i, duck.position.y - 0.5f,
-						side * 1, 1);
-			else
-				batch.draw(Assets.duckFly.getKeyFrame(duck.stateTime, true),
-						duck.position.x - 0.5f + i, duck.position.y - 0.5f,
-						side * 1, 1);
+			switch (duck.state) {
+			case Duck.DUCK_STATE_FLYING:
+				float side = duck.velocity.x < 0 ? -1 : 1;
+				if (side < 0)
+					batch.draw(
+							Assets.duckFly.getKeyFrame(duck.stateTime, true),
+							duck.position.x + 0.5f + i, duck.position.y - 0.5f,
+							side * 1, 1);
+				else
+					batch.draw(
+							Assets.duckFly.getKeyFrame(duck.stateTime, true),
+							duck.position.x - 0.5f + i, duck.position.y - 0.5f,
+							side * 1, 1);
+				break;
+			case Duck.DUCK_STATE_HIT:
+				batch.draw(Assets.duckHit, duck.position.x, duck.position.y,
+						Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
+				break;
+			}
 		}
 	}
 }
