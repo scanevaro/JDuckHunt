@@ -1,0 +1,46 @@
+Duck Hunt Prototipe Software Requirements
+
+Primary's
+Secondary's
+Terciary's
+
+
+Primary's:
+-Ducks spawn from behind bushes
+ -by one or by two depending on game mode
+-Ducks move randomly and can get behind bushes and tree
+-After a shot is missed, ducks can change direction
+-Player has only 3 shots
+ -After the 3 are shot, if a duck is alive, immediatly flys away
+-Main menu has 2 modes
+ -first one with 1 duck spawning
+ -second with 2
+-Levels are divided by number of ducks and called ROUNDS, that each one has 10 ducks and each round fly faster
+
+Secondary's:
+-Dog
+ -Dog walking
+ -Dog laughing
+ -Dog happy
+-Ducks
+ -flying
+ -falling
+ -hit
+ -colors
+-Background
+ -midday
+ -afternoon
+ -morning
+-Font
+
+Terciary's:
+-Shotgun shoot
+-Shotgun reload
+-Duck sounds
+-Duck falling
+-Duck hitting ground
+-Dog sounds
+-Dog laughing
+-Dog Happy
+-Main theme
+-Perfect Round
