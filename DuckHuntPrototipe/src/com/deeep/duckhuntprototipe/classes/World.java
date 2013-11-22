@@ -57,6 +57,15 @@ public class World {
 		for (int i = 0; i < len; i++) {
 			Duck duck = ducks.get(i);
 			duck.update(deltaTime);
+
+			if (duck.position.y < 0) {
+				ducks.remove(i);
+			}
+		}
+
+		if (ducks.size() == 0) {
+			Duck duck = new Duck(7.5f, 5f);
+			ducks.add(duck);
 		}
 	}
 

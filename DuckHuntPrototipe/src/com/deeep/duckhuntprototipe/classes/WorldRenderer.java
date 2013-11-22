@@ -71,6 +71,10 @@ public class WorldRenderer {
 				batch.draw(Assets.duckHit, duck.position.x, duck.position.y,
 						Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
 				break;
+			case Duck.DUCK_STATE_FALLING:
+				batch.draw(Assets.duckFall, duck.position.x, duck.position.y,
+						Duck.DUCK_WIDTH, Duck.DUCK_WIDTH);
+				break;
 			}
 		}
 	}

@@ -38,7 +38,7 @@ public class Assets {
 				((TextureRegion) items.findRegion("duckFlyRight1")),
 				((TextureRegion) items.findRegion("duckFlyRight2")));
 		duckHit = items.findRegion("duckHit");
-		duckFall = items.findRegion("duckFall");
+		duckFall = items.findRegion("duckFalling");
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
 				Gdx.files.internal("data/font.ttf"));
