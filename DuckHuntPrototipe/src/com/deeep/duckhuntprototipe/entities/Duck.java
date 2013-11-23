@@ -12,8 +12,8 @@ public class Duck extends DynamicGameObject {
 	public static final int DUCK_STATE_FALLING = 2;
 	public static final float DUCK_VELOCITY = 10;
 	public static final float DUCK_GRAVITY = -0.5f;
-	public static final float DUCK_WIDTH = 1;
-	public static final float DUCK_HEIGHT = 1;
+	public static final float DUCK_WIDTH = 1.25f;
+	public static final float DUCK_HEIGHT = 1.25f;
 
 	public int state;
 	public float stateTime;

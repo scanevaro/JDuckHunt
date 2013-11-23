@@ -60,12 +60,12 @@ public class WorldRenderer {
 					batch.draw(
 							Assets.duckFly.getKeyFrame(duck.stateTime, true),
 							duck.position.x + 0.5f + i, duck.position.y - 0.5f,
-							side * 1, 1);
+							side * Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
 				else
 					batch.draw(
 							Assets.duckFly.getKeyFrame(duck.stateTime, true),
 							duck.position.x - 0.5f + i, duck.position.y - 0.5f,
-							side * 1, 1);
+							side * Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
 				break;
 			case Duck.DUCK_STATE_HIT:
 				batch.draw(Assets.duckHit, duck.position.x, duck.position.y,
