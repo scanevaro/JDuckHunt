@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.Settings;
+import com.deeep.duckhuntprototipe.classes.World;
 
 public class MainMenuScreen implements Screen {
 
@@ -52,7 +53,7 @@ public class MainMenuScreen implements Screen {
 			if (playMode1Bounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.shoot);
 				if (menuCursor == 100)
-					game.setScreen(new GameMode1Screen(game));
+					game.setScreen(new GameScreen(game, World.GAME_MODE_1));
 				else
 					menuCursor = 100;
 				return;
@@ -61,7 +62,7 @@ public class MainMenuScreen implements Screen {
 			if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.shoot);
 				if (menuCursor == 80)
-					game.setScreen(new GameMode2Screen(game));
+					game.setScreen(new GameScreen(game, World.GAME_MODE_2));
 				else
 					menuCursor = 80;
 				return;
