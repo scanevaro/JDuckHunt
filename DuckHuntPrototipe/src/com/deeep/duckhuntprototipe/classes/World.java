@@ -21,18 +21,22 @@ public class World {
 	public static final float WORLD_WIDTH = 15;
 	public static final float WORLD_HEIGHT = 10;
 	public static final int WORLD_STATE_RUNNING = 0;
+	public static final int GAME_MODE_1 = 0;
+	public static final int GAME_MODE_2 = 1;
 
 	public final List<Duck> ducks;
 	public final Random rand;
 	public final WorldListener listener;
 
 	public int state;
+	public int gameMode;
 
 	Vector3 touchPoint;
 
-	public World(WorldListener listener) {
+	public World(WorldListener listener, int gameMode) {
 		this.ducks = new ArrayList<Duck>();
 		this.listener = listener;
+		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
 		generateLevel();
@@ -41,11 +45,16 @@ public class World {
 	}
 
 	private void generateLevel() {
-		Duck duck = new Duck(8.5f, 5f);
-		ducks.add(duck);
+		if (gameMode == GAME_MODE_1) {
+			Duck duck = new Duck(8.5f, 5f);
+			ducks.add(duck);
+		} else {
+			Duck duck = new Duck(8.5f, 5f);
+			ducks.add(duck);
 
-		Duck duck2 = new Duck(6.5f, 5f);
-		ducks.add(duck2);
+			Duck duck2 = new Duck(6.5f, 5f);
+			ducks.add(duck2);
+		}
 	}
 
 	public void update(float deltaTime) {
@@ -65,8 +74,15 @@ public class World {
 		}
 
 		if (ducks.size() == 0) {
-			Duck duck = new Duck(7.5f, 5f);
-			ducks.add(duck);
+			if (gameMode == GAME_MODE_1) {
+				Duck duck = new Duck(8.5f, 5f);
+				ducks.add(duck);
+			} else {
+				Duck duck = new Duck(8.5f, 5f);
+				ducks.add(duck);
+
+				Duck duck2 = new Duck(6.5f, 5f);
+			}
 		}
 	}
 

@@ -2,13 +2,8 @@ package com.deeep.duckhuntprototipe;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.Settings;
-import com.deeep.duckhuntprototipe.screens.GameMode1Screen;
 import com.deeep.duckhuntprototipe.screens.MainMenuScreen;
 
 public class DuckHuntPrototipe extends Game {
