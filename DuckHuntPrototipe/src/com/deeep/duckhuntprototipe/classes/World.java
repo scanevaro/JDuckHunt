@@ -41,10 +41,11 @@ public class World {
 	}
 
 	private void generateLevel() {
-		// for (int i = 0; i < 2; i++) {
-		Duck duck = new Duck(7.5f, 5f);
+		Duck duck = new Duck(8.5f, 5f);
 		ducks.add(duck);
-		// }
+
+		Duck duck2 = new Duck(6.5f, 5f);
+		ducks.add(duck2);
 	}
 
 	public void update(float deltaTime) {
