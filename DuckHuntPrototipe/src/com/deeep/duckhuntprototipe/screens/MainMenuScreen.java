@@ -37,8 +37,10 @@ public class MainMenuScreen implements Screen {
 				- Assets.gameMode1.getRegionWidth() / 2 - 60, 100,
 				Assets.gameMode1.getRegionWidth() * 2,
 				Assets.gameMode1.getRegionHeight() * 2);
-		// playMode2Bounds = new Rectangle(,,,);
-		// soundBounds = new Rectangle(,,,);
+		playMode2Bounds = new Rectangle(480 / 2
+				- Assets.gameMode2.getRegionWidth() / 2 - 60, 70,
+				Assets.gameMode2.getRegionWidth() * 2,
+				Assets.gameMode2.getRegionHeight() * 2);
 		touchPoint = new Vector3();
 		batcher = new SpriteBatch();
 		play = true;
@@ -51,25 +53,27 @@ public class MainMenuScreen implements Screen {
 					0));
 
 			if (playMode1Bounds.contains(touchPoint.x, touchPoint.y)) {
-				Assets.playSound(Assets.shoot);
-				if (menuCursor == 100)
+				if (menuCursor == 100) {
 					game.setScreen(new GameScreen(game, World.GAME_MODE_1));
-				else
+					if (Assets.duckHunt.isPlaying())
+						Assets.duckHunt.stop();
+				} else {
 					menuCursor = 100;
+					Assets.playSound(Assets.shoot);
+				}
 				return;
 			}
 
 			if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
-				Assets.playSound(Assets.shoot);
-				if (menuCursor == 80)
+				if (menuCursor == 70) {
 					game.setScreen(new GameScreen(game, World.GAME_MODE_2));
-				else
-					menuCursor = 80;
+					if (Assets.duckHunt.isPlaying())
+						Assets.duckHunt.stop();
+				} else {
+					menuCursor = 70;
+					Assets.playSound(Assets.shoot);
+				}
 				return;
-				// }
-				// if (soundBounds.contains(touchPoint.x, touchPoint.y)) {
-				// Assets.playSound(Assets.clickSound);
-				// Settings.soundEnabled = !Settings.soundEnabled;
 			}
 		}
 	}

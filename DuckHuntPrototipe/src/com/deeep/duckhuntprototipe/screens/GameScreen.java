@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
 			}
 
 		};
-		world = new World(worldListener, World.GAME_MODE_2);
+		world = new World(worldListener, gameMode);
 		renderer = new WorldRenderer(batcher, world);
 	}
 
