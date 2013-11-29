@@ -14,7 +14,7 @@ import com.deeep.duckhuntprototipe.classes.World;
 import com.deeep.duckhuntprototipe.classes.WorldRenderer;
 import com.deeep.duckhuntprototipe.classes.World.WorldListener;
 
-public class GameScreen implements Screen {
+public class GameMode1Screen implements Screen {
 
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
 	WorldListener worldListener;
 	WorldRenderer renderer;
 
-	public GameScreen(Game game) {
+	public GameMode1Screen(Game game) {
 		this.game = game;
 
 		guiCam = new OrthographicCamera(480, 320);

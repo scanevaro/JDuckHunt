@@ -18,6 +18,10 @@ public class Assets {
 	public static TextureRegion ready;
 	public static TextureRegion duckHit;
 	public static TextureRegion duckFall;
+	public static TextureRegion title;
+	public static TextureRegion gameMode1;
+	public static TextureRegion gameMode2;
+	public static TextureRegion menuCursor;
 
 	public static Animation duckFly;
 
@@ -30,8 +34,21 @@ public class Assets {
 	public static Sound ducks;
 
 	public static void load() {
+		loadAtlas();
+
+		loadTextures();
+
+		loadFont();
+
+		loadSounds();
+	}
+
+	private static void loadAtlas() {
 		items = new TextureAtlas(Gdx.files.internal("data/items.pack"),
 				Gdx.files.internal("data"));
+	}
+
+	private static void loadTextures() {
 		backgroundRegion = items.findRegion("background");
 		dog = items.findRegion("dogSmelling1");
 		duckFly = new Animation(0.2f,
@@ -39,20 +56,28 @@ public class Assets {
 				((TextureRegion) items.findRegion("duckFlyRight2")));
 		duckHit = items.findRegion("duckHit");
 		duckFall = items.findRegion("duckFalling");
+		title = items.findRegion("title");
+		gameMode1 = items.findRegion("gameMode1");
+		gameMode2 = items.findRegion("gameMode2");
+		menuCursor = items.findRegion("menuCursor");
+	}
 
+	private static void loadFont() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
 				Gdx.files.internal("data/font.ttf"));
 		font = generator.generateFont(62);
 		generator.dispose();
 
+	}
+
+	private static void loadSounds() {
 		duckHunt = Gdx.audio.newMusic(Gdx.files.internal("data/DuckHunt.mp3"));
 		duckHunt.setLooping(false);
 		duckHunt.setVolume(0.5f);
-		if(Settings.soundEnabled)
-			duckHunt.play();
-		
-		reloading = Gdx.audio.newSound(Gdx.files.internal("data/reloading.wav"));
-		shoot = Gdx.audio.newSound(Gdx.files.internal("data/shoot.wav"));
+
+		reloading = Gdx.audio
+				.newSound(Gdx.files.internal("data/reloading.wav"));
+		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
 		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
 	}
 

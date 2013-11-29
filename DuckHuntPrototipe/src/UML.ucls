@@ -40,8 +40,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.deeep.duckhuntprototipe.screens.GameScreen" project="DuckHuntPrototipe" 
-    file="/DuckHuntPrototipe/src/com/deeep/duckhuntprototipe/screens/GameScreen.java" binary="false" 
+  <class id="5" language="java" name="com.deeep.duckhuntprototipe.screens.GameMode1Screen" project="DuckHuntPrototipe" 
+    file="/DuckHuntPrototipe/src/com/deeep/duckhuntprototipe/screens/GameMode1Screen.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="532" y="327"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.Settings;
-import com.deeep.duckhuntprototipe.screens.GameScreen;
+import com.deeep.duckhuntprototipe.screens.GameMode1Screen;
+import com.deeep.duckhuntprototipe.screens.MainMenuScreen;
 
 public class DuckHuntPrototipe extends Game {
 	FPSLogger fps;
@@ -17,7 +18,7 @@ public class DuckHuntPrototipe extends Game {
 	public void create() {
 		Settings.load();
 		Assets.load();
-		setScreen(new GameScreen(this));
+		setScreen(new MainMenuScreen(this));
 		fps = new FPSLogger();
 	}
 

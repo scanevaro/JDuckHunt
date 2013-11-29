@@ -5,64 +5,97 @@ filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 1, 29
+  xy: 1, 18
   size: 256, 224
   orig: 256, 224
   offset: 0, 0
   index: -1
-dogSmelling1
+title
   rotate: false
-  xy: 259, 212
-  size: 57, 41
-  orig: 57, 41
+  xy: 259, 146
+  size: 192, 96
+  orig: 192, 96
   offset: 0, 0
   index: -1
-dogSmelling2
+gameMode2
   rotate: false
-  xy: 259, 169
-  size: 55, 41
-  orig: 55, 41
+  xy: 1, 9
+  size: 127, 7
+  orig: 127, 7
+  offset: 0, 0
+  index: -1
+gameMode1
+  rotate: false
+  xy: 259, 137
+  size: 119, 7
+  orig: 119, 7
   offset: 0, 0
   index: -1
 duckHit
   rotate: false
-  xy: 318, 222
+  xy: 453, 211
   size: 33, 31
   orig: 33, 31
   offset: 0, 0
   index: -1
 duckFly1
   rotate: false
-  xy: 259, 134
+  xy: 259, 102
   size: 30, 33
   orig: 30, 33
   offset: 0, 0
   index: -1
 duckFlyRight1
   rotate: false
-  xy: 1, 1
+  xy: 291, 109
   size: 36, 26
   orig: 36, 26
   offset: 0, 0
   index: -1
 duckFly2
   rotate: false
-  xy: 259, 99
+  xy: 453, 176
   size: 27, 33
   orig: 27, 33
   offset: 0, 0
   index: -1
 duckFlyRight2
   rotate: false
-  xy: 353, 231
+  xy: 329, 113
   size: 36, 22
   orig: 36, 22
   offset: 0, 0
   index: -1
 duckFalling
   rotate: false
-  xy: 291, 134
+  xy: 259, 67
   size: 20, 33
   orig: 20, 33
+  offset: 0, 0
+  index: -1
+menuCursor
+  rotate: false
+  xy: 1, 1
+  size: 8, 6
+  orig: 8, 6
+  offset: 0, 0
+  index: -1
+
+items2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+new assets/dog
+  rotate: false
+  xy: 1, 46
+  size: 617, 64
+  orig: 617, 64
+  offset: 0, 0
+  index: -1
+new assets/gamemodes
+  rotate: false
+  xy: 1, 1
+  size: 180, 43
+  orig: 180, 43
   offset: 0, 0
   index: -1
