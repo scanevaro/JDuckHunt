@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import com.deeep.duckhuntprototipe.entities.Dog;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
 public class World {
@@ -21,12 +22,14 @@ public class World {
 	public static final float WORLD_WIDTH = 15;
 	public static final float WORLD_HEIGHT = 10;
 	public static final int WORLD_STATE_RUNNING = 0;
+	public static final int WORLD_STATE_ROUND_START = 1;
 	public static final int GAME_MODE_1 = 0;
 	public static final int GAME_MODE_2 = 1;
 
 	public final List<Duck> ducks;
 	public final Random rand;
 	public final WorldListener listener;
+	public final Dog dog;
 
 	public int state;
 	public int gameMode;
@@ -39,9 +42,10 @@ public class World {
 		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
+		dog = new Dog(1, 3);
 		generateLevel();
 
-		this.state = WORLD_STATE_RUNNING;
+		this.state = WORLD_STATE_ROUND_START;
 	}
 
 	private void generateLevel() {
@@ -58,8 +62,16 @@ public class World {
 	}
 
 	public void update(float deltaTime) {
-		updateDucks(deltaTime);
-		checkCollisions();
+		if (state == WORLD_STATE_ROUND_START) {
+			updateDog(deltaTime);
+		} else {
+			updateDucks(deltaTime);
+			checkCollisions();
+		}
+	}
+
+	private void updateDog(float deltaTime) {
+		dog.update(deltaTime);
 	}
 
 	private void updateDucks(float deltaTime) {

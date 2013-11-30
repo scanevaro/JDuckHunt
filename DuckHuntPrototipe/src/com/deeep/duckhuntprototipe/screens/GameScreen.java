@@ -56,6 +56,7 @@ public class GameScreen implements Screen {
 		};
 		world = new World(worldListener, gameMode);
 		renderer = new WorldRenderer(batcher, world);
+		Assets.startRound.play();
 	}
 
 	public void update(float deltaTime) {
@@ -73,13 +74,14 @@ public class GameScreen implements Screen {
 	}
 
 	private void updateRunning(float deltaTime) {
-		if (Gdx.input.justTouched()) {
-			// si quisiera usar algo del UI, está este touchPoint
-			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
-					0));
-			Assets.playSound(Assets.shoot);
+		if (state == GAME_RUNNING) {
+			if (Gdx.input.justTouched()) {
+				// si quisiera usar algo del UI, está este touchPoint
+				guiCam.unproject(touchPoint.set(Gdx.input.getX(),
+						Gdx.input.getY(), 0));
+				Assets.playSound(Assets.shoot);
+			}
 		}
-
 		// ApplicationType appType = Gdx.app.getType();
 
 		/*
@@ -118,13 +120,22 @@ public class GameScreen implements Screen {
 	}
 
 	private void presentRunning() {
+		// USER INTERFACE DRAW
 		// batcher.draw(Assets.pause, 480 - 32, 32, 32, 32);
 		// Assets.font.draw(batcher, scoreString, 16, 480 - 20);
 	}
 
 	private void presentReady() {
-		Assets.font.draw(batcher, "READY", 64,
+		Assets.font.draw(batcher, "Round", Gdx.graphics.getWidth() / 2
+				- Assets.font.getSpaceWidth() * 7.5f / 2,
+				Gdx.graphics.getHeight() / 2 + 64);
+		Assets.font.draw(batcher, "1", Gdx.graphics.getWidth() / 2
+				- Assets.font.getSpaceWidth() * 7.5f / 2 + 45,
 				Gdx.graphics.getHeight() / 2 + 32);
+	}
+
+	private void presentIntro() {
+		// dawg
 	}
 
 	@Override
