@@ -16,6 +16,7 @@ public class Dog extends GameObject {
 	public static final float DOG_HEIGHT = 2f;
 
 	public TextureRegion texture;
+	private int bark;
 	public int state;
 	public float stateTime;
 
@@ -23,6 +24,7 @@ public class Dog extends GameObject {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT);
 		state = DOG_STATE_WALKING;
 		stateTime = 0;
+		bark = 0;
 		texture = Assets.dogWalking.getKeyFrame(stateTime, true);
 	}
 
@@ -30,16 +32,26 @@ public class Dog extends GameObject {
 
 		switch (state) {
 		case DOG_STATE_WALKING:
-			if (position.x > 7.5f) {
+			if (!Assets.startRound.isPlaying()) {
 				state = DOG_STATE_FOUND;
+				stateTime = 0;
 				break;
 			}
-			position.add(deltaTime * 5, 0);
+			texture = Assets.dogWalking.getKeyFrame(stateTime, true);
+			position.add(deltaTime, 0);
 			break;
 		case DOG_STATE_FOUND:
+			if (stateTime > 1) {
+				state = DOG_STATE_JUMPING;
+				stateTime = 0;
+			}
 			texture = Assets.dogFound;
 			break;
 		case DOG_STATE_JUMPING:
+			if (bark < 3) {
+				Assets.bark.play();
+				bark++;
+			}
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
 			break;
 		case DOG_STATE_FOUND_DUCK:

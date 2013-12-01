@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.deeep.duckhuntprototipe.entities.Dog;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
 public class WorldRenderer {
@@ -46,23 +47,29 @@ public class WorldRenderer {
 	private void renderObjects() {
 		batch.enableBlending();
 		batch.begin();
+		renderDog();
 		renderDucks();
 		batch.end();
+	}
+
+	private void renderDog() {
+		batch.draw(world.dog.texture, world.dog.position.x,
+				world.dog.position.y, Dog.DOG_WIDTH, Dog.DOG_HEIGHT);
 	}
 
 	private void renderDucks() {
 		int len = world.ducks.size();
 		for (int i = 0; i < len; i++) {
 			Duck duck = world.ducks.get(i);
-			
+
 			TextureRegion texture = duck.texture;
 			float x = duck.position.x;
 			float y = duck.position.y;
 			float width = duck.side * Duck.DUCK_WIDTH;
 			float height = Duck.DUCK_HEIGHT;
-			
+
 			batch.draw(texture, x, y, width, height);
-			
+
 			switch (duck.state) {
 			case Duck.DUCK_STATE_FLYING:
 				float side = duck.velocity.x < 0 ? -1 : 1;
@@ -82,8 +89,8 @@ public class WorldRenderer {
 						Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
 				break;
 			case Duck.DUCK_STATE_FALLING:
-				batch.draw(Assets.duckFalling, duck.position.x, duck.position.y,
-						Duck.DUCK_WIDTH, Duck.DUCK_WIDTH);
+				batch.draw(Assets.duckFalling, duck.position.x,
+						duck.position.y, Duck.DUCK_WIDTH, Duck.DUCK_WIDTH);
 				break;
 			}
 		}

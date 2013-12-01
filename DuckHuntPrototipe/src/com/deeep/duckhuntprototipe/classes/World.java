@@ -42,7 +42,7 @@ public class World {
 		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
-		dog = new Dog(1, 3);
+		dog = new Dog(0, 3);
 		generateLevel();
 
 		this.state = WORLD_STATE_ROUND_START;
