@@ -22,12 +22,16 @@ public class Dog extends GameObject {
 	public int state;
 	public float stateTime;
 	private int frames;
+	private float dogPositiony;
+	private int gravityY;
 
 	public Dog(float x, float y) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT);
 		state = DOG_STATE_WALKING;
 		stateTime = 0;
 		bark = 0;
+		frames = -1;
+		gravityY = -3;
 		texture = Assets.dogWalking.getKeyFrame(stateTime, true);
 	}
 
@@ -44,20 +48,34 @@ public class Dog extends GameObject {
 			position.add(deltaTime, 0);
 			break;
 		case DOG_STATE_FOUND:
-			if (stateTime > 1) {
+			if (stateTime > 0.4f) {
 				state = DOG_STATE_JUMPING;
+				dogPositiony = position.y;
 				stateTime = 0;
 			}
 			texture = Assets.dogFound;
 			break;
 		case DOG_STATE_JUMPING:
+			if (frames == -1)
+				Assets.bark.play();
+			
 			frames++;
 			if (frames > 15) {
-				if (bark < 3) {
+				if (bark < 2) {
 					Assets.bark.play();
 					bark++;
 				}
 				frames = 0;
+			}
+
+			if (dogPositiony + 2 > position.y)
+				position.add(deltaTime, deltaTime * 4);
+			else {
+				dogPositiony = 0;
+				position.add(deltaTime, deltaTime * gravityY);
+				gravityY += -1; 
+				if (position.y == 0)
+					state = DOG_STATE_HIDDEN;
 			}
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
 			break;
