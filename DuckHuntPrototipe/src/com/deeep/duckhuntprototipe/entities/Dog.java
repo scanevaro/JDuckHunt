@@ -1,6 +1,8 @@
 package com.deeep.duckhuntprototipe.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.deeep.duckhuntprototipe.DuckHuntPrototipe;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.GameObject;
 
@@ -19,6 +21,7 @@ public class Dog extends GameObject {
 	private int bark;
 	public int state;
 	public float stateTime;
+	private int frames;
 
 	public Dog(float x, float y) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT);
@@ -48,9 +51,13 @@ public class Dog extends GameObject {
 			texture = Assets.dogFound;
 			break;
 		case DOG_STATE_JUMPING:
-			if (bark < 3) {
-				Assets.bark.play();
-				bark++;
+			frames++;
+			if (frames > 15) {
+				if (bark < 3) {
+					Assets.bark.play();
+					bark++;
+				}
+				frames = 0;
 			}
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
 			break;
@@ -66,13 +73,5 @@ public class Dog extends GameObject {
 		}
 
 		stateTime += deltaTime;
-	}
-
-	public void hit() {
-		/***/
-	}
-
-	public void dead() {
-		/***/
 	}
 }
