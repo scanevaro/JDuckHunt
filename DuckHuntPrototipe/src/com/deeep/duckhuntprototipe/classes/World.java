@@ -42,7 +42,7 @@ public class World {
 		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
-		dog = new Dog(0, 3);
+		dog = new Dog(0, 1.9f);
 		generateLevel();
 
 		this.state = WORLD_STATE_ROUND_START;
@@ -62,9 +62,10 @@ public class World {
 	}
 
 	public void update(float deltaTime) {
-		if (state == WORLD_STATE_ROUND_START) {
+		if (state == WORLD_STATE_ROUND_START){
 			updateDog(deltaTime);
-		} else {
+			checkDogState();
+		}else {
 			updateDucks(deltaTime);
 			checkCollisions();
 		}
@@ -72,6 +73,11 @@ public class World {
 
 	private void updateDog(float deltaTime) {
 		dog.update(deltaTime);
+	}
+
+	private void checkDogState() {
+		if(dog.state == Dog.DOG_STATE_HIDDEN)
+			state = WORLD_STATE_RUNNING;
 	}
 
 	private void updateDucks(float deltaTime) {

@@ -58,7 +58,7 @@ public class Dog extends GameObject {
 		case DOG_STATE_JUMPING:
 			if (frames == -1)
 				Assets.bark.play();
-			
+
 			frames++;
 			if (frames > 15) {
 				if (bark < 2) {
@@ -73,8 +73,8 @@ public class Dog extends GameObject {
 			else {
 				dogPositiony = 0;
 				position.add(deltaTime, deltaTime * gravityY);
-				gravityY += -1; 
-				if (position.y == 0)
+				gravityY += -1;
+				if (position.y < 3)
 					state = DOG_STATE_HIDDEN;
 			}
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
@@ -86,7 +86,7 @@ public class Dog extends GameObject {
 			texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
 			break;
 		case DOG_STATE_HIDDEN:
-			/***/
+			texture = null;
 			break;
 		}
 

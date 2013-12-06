@@ -101,6 +101,7 @@ public class GameScreen implements Screen {
 
 	public void draw(float deltaTime) {
 		GLCommon gl = Gdx.gl;
+		gl.glClearColor(0.392156f, 0.686274f, 1, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		renderer.render();

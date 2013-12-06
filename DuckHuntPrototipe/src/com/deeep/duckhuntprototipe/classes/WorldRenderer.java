@@ -29,14 +29,20 @@ public class WorldRenderer {
 		cam.unproject(world.touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
 				0));
 		batch.setProjectionMatrix(cam.combined);
-		renderBackground();
-		renderObjects();
-		// renderFields();
-		// renderDog();
+		batch.enableBlending();
+
+		if (world.dog.state == Dog.DOG_STATE_WALKING
+				|| world.dog.state == Dog.DOG_STATE_FOUND
+				|| world.dog.state == Dog.DOG_STATE_JUMPING) {
+			renderBackground();
+			renderObjects();
+		} else {
+			renderObjects();
+			renderBackground();
+		}
 	}
 
 	private void renderBackground() {
-		batch.disableBlending();
 		batch.begin();
 		batch.draw(Assets.backgroundRegion, cam.position.x - FRUSTUM_WIDTH / 2,
 				cam.position.y - FRUSTUM_HEIGHT / 2, FRUSTUM_WIDTH,
@@ -45,7 +51,6 @@ public class WorldRenderer {
 	}
 
 	private void renderObjects() {
-		batch.enableBlending();
 		batch.begin();
 		renderDog();
 		renderDucks();
@@ -53,8 +58,9 @@ public class WorldRenderer {
 	}
 
 	private void renderDog() {
-		batch.draw(world.dog.texture, world.dog.position.x,
-				world.dog.position.y, Dog.DOG_WIDTH, Dog.DOG_HEIGHT);
+		if (world.dog.texture != null)
+			batch.draw(world.dog.texture, world.dog.position.x,
+					world.dog.position.y, Dog.DOG_WIDTH, Dog.DOG_HEIGHT);
 	}
 
 	private void renderDucks() {
