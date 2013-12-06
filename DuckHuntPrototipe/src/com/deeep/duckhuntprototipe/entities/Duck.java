@@ -22,6 +22,7 @@ public class Duck extends DynamicGameObject {
 	public int state;
 	public float stateTime;
 	private Random rand;
+	private int frames;
 
 	public Duck(float x, float y) {
 		super(x, y, DUCK_WIDTH, DUCK_HEIGHT);
@@ -72,6 +73,11 @@ public class Duck extends DynamicGameObject {
 				velocity.y = rand.nextFloat() * topBot;
 			}
 
+			frames++;
+			if (frames > 7) {
+				Assets.miss.play();
+				frames = 0;
+			}
 			texture = Assets.duckFly.getKeyFrame(stateTime, true);
 			break;
 		case DUCK_STATE_HIT:
