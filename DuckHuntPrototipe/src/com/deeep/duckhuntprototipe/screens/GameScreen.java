@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.World;
 import com.deeep.duckhuntprototipe.classes.World.WorldListener;
 import com.deeep.duckhuntprototipe.classes.WorldRenderer;
+import com.deeep.duckhuntprototipe.entities.Dog;
 
 public class GameScreen implements Screen {
 
@@ -21,6 +23,7 @@ public class GameScreen implements Screen {
 	Game game;
 
 	int state;
+	int stateTime;
 	OrthographicCamera guiCam;
 	Vector3 touchPoint;
 	SpriteBatch batcher;
@@ -28,6 +31,7 @@ public class GameScreen implements Screen {
 	WorldListener worldListener;
 	WorldRenderer renderer;
 	String round;
+	private int shots;
 
 	public GameScreen(Game game, int gameMode) {
 		this.game = game;
@@ -41,7 +45,7 @@ public class GameScreen implements Screen {
 
 			@Override
 			public void reload() {
-				Assets.reloading.play();
+
 			}
 
 			@Override
@@ -58,6 +62,10 @@ public class GameScreen implements Screen {
 		world = new World(worldListener, gameMode);
 		renderer = new WorldRenderer(batcher, world);
 		Assets.startRound.play();
+
+		state = 0;
+		stateTime = 0;
+		shots = 3;
 	}
 
 	public void update(float deltaTime) {
@@ -81,6 +89,7 @@ public class GameScreen implements Screen {
 				guiCam.unproject(touchPoint.set(Gdx.input.getX(),
 						Gdx.input.getY(), 0));
 				Assets.playSound(Assets.shoot);
+				shots--;
 			}
 		}
 		// ApplicationType appType = Gdx.app.getType();
@@ -93,7 +102,7 @@ public class GameScreen implements Screen {
 	}
 
 	private void updateReady(float deltaTime) {
-		if (Gdx.input.justTouched())
+		if (world.dog.state == Dog.DOG_STATE_HIDDEN)
 			state = GAME_RUNNING;
 
 		world.update(deltaTime);
@@ -111,7 +120,7 @@ public class GameScreen implements Screen {
 		batcher.enableBlending();
 		batcher.begin();
 
-		drawUI();
+		drawUI(deltaTime);
 
 		switch (state) {
 		case GAME_READY:
@@ -125,23 +134,35 @@ public class GameScreen implements Screen {
 		batcher.end();
 	}
 
-	private void drawUI() {
+	private void drawUI(float deltaTime) {
+		TextureRegion texture = null;
+		if (shots == 3)
+			texture = Assets.ui3Shots;
+		else if (shots == 2)
+			texture = Assets.ui2Shots;
+		else if (shots == 1)
+			texture = Assets.ui1Shots;
+		else {
+			texture = Assets.ui0Shots.getKeyFrame(stateTime, true);
+			stateTime += deltaTime;
+		}
+
 		batcher.draw(
-				Assets.uiShot,
+				texture,
 				40,
 				20,
-				Assets.uiShot.getRegionWidth() + Assets.uiShot.getRegionWidth()
-						/ 2,
-				Assets.uiShot.getRegionHeight()
-						+ Assets.uiShot.getRegionHeight() / 2);
+				Assets.ui3Shots.getRegionWidth()
+						+ Assets.ui3Shots.getRegionWidth() / 2,
+				Assets.ui3Shots.getRegionHeight()
+						+ Assets.ui3Shots.getRegionHeight() / 2);
 		batcher.draw(
-				Assets.uiDucks,
-				480 / 2 - Assets.uiDucks.getRegionWidth() / 2 - 30,
+				Assets.ui9Ducks,
+				480 / 2 - Assets.ui9Ducks.getRegionWidth() / 2 - 30,
 				20,
-				Assets.uiDucks.getRegionWidth() * 2
-						- Assets.uiDucks.getRegionWidth() / 2,
-				Assets.uiDucks.getRegionHeight()
-						+ Assets.uiDucks.getRegionHeight() / 2);
+				Assets.ui9Ducks.getRegionWidth() * 2
+						- Assets.ui9Ducks.getRegionWidth() / 2,
+				Assets.ui9Ducks.getRegionHeight()
+						+ Assets.ui9Ducks.getRegionHeight() / 2);
 		batcher.draw(
 				Assets.uiScore,
 				480 - 100,

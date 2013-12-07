@@ -66,6 +66,7 @@ public class World {
 			updateDog(deltaTime);
 			checkDogState();
 		}else {
+			updateDog(deltaTime);
 			updateDucks(deltaTime);
 			checkCollisions();
 		}

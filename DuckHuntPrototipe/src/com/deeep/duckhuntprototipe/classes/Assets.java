@@ -24,21 +24,24 @@ public class Assets {
 	public static TextureRegion menuCursor;
 	public static TextureRegion dogFound;
 	public static TextureRegion uiShot;
-	public static TextureRegion uiDucks;
+	public static TextureRegion ui9Ducks;
 	public static TextureRegion uiScore;
 	public static TextureRegion presentRound;
+	public static TextureRegion ui3Shots;
+	public static TextureRegion ui2Shots;
+	public static TextureRegion ui1Shots;
 
 	public static Animation duckFly;
 	public static Animation dogWalking;
 	public static Animation dogJumping;
 	public static Animation dogLaughing;
+	public static Animation ui0Shots;
 
 	public static BitmapFont font;
 
 	public static Music duckHunt;
 	public static Music startRound;
 
-	public static Sound reloading;
 	public static Sound shoot;
 	public static Sound ducks;
 	public static Sound bark;
@@ -75,6 +78,10 @@ public class Assets {
 		duckFly = new Animation(0.2f,
 				((TextureRegion) items.findRegion("duckFlyRight1")),
 				((TextureRegion) items.findRegion("duckFlyRight2")));
+		ui0Shots = new Animation(0.4f,
+				((TextureRegion) items.findRegion("ui0Shots1")),
+				((TextureRegion) items.findRegion("ui0Shots2")));
+
 		duckHit = items.findRegion("duckHit");
 		duckFalling = items.findRegion("duckFalling");
 		title = items.findRegion("title");
@@ -82,9 +89,12 @@ public class Assets {
 		gameMode2 = items.findRegion("gameMode2");
 		menuCursor = items.findRegion("menuCursor");
 		uiShot = items.findRegion("uiShot");
-		uiDucks = items.findRegion("uiDucks");
+		ui9Ducks = items.findRegion("ui9Ducks");
 		uiScore = items.findRegion("uiScore");
 		presentRound = items.findRegion("presentRound");
+		ui3Shots = items.findRegion("ui3Shots");
+		ui2Shots = items.findRegion("ui2Shots");
+		ui1Shots = items.findRegion("ui1Shots");
 	}
 
 	private static void loadFont() {
@@ -96,14 +106,13 @@ public class Assets {
 	}
 
 	private static void loadSounds() {
-		duckHunt = Gdx.audio.newMusic(Gdx.files.internal("data/DuckHunt.mp3"));
+		duckHunt = Gdx.audio.newMusic(Gdx.files
+				.internal("data/sounds/DuckHunt.mp3"));
 		duckHunt.setLooping(false);
 		duckHunt.setVolume(0.5f);
 		startRound = Gdx.audio.newMusic(Gdx.files
 				.internal("data/sounds/start_round.mp3"));
 
-		reloading = Gdx.audio
-				.newSound(Gdx.files.internal("data/reloading.wav"));
 		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
 		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
 		bark = Gdx.audio.newSound(Gdx.files.internal("data/sounds/bark.mp3"));
