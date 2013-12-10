@@ -37,7 +37,7 @@ public class World {
 	Vector3 touchPoint;
 
 	public World(WorldListener listener, int gameMode) {
-		this.ducks = new ArrayList<Duck>();
+		this.ducks = new ArrayList<Duck>(10);
 		this.listener = listener;
 		this.gameMode = gameMode;
 		rand = new Random();
@@ -50,22 +50,27 @@ public class World {
 
 	private void generateLevel() {
 		if (gameMode == GAME_MODE_1) {
-			Duck duck = new Duck(8.5f, 5f);
-			ducks.add(duck);
+			for (int i = 0; i < 1; i++) {
+				float random = rand.nextFloat() > 0.5f ? 6.5f : 8.5f;
+				Duck duck = new Duck(random, 2f);
+				ducks.add(duck);
+			}
 		} else {
-			Duck duck = new Duck(8.5f, 5f);
+			float random = rand.nextFloat() > 0.5f ? 5.5f : 6.5f;
+			Duck duck = new Duck(random, 2f);
 			ducks.add(duck);
 
-			Duck duck2 = new Duck(6.5f, 5f);
+			float random2 = rand.nextFloat() > 0.5f ? 8.5f : 9.5f;
+			Duck duck2 = new Duck(random2, 2f);
 			ducks.add(duck2);
 		}
 	}
 
 	public void update(float deltaTime) {
-		if (state == WORLD_STATE_ROUND_START){
+		if (state == WORLD_STATE_ROUND_START) {
 			updateDog(deltaTime);
 			checkDogState();
-		}else {
+		} else {
 			updateDog(deltaTime);
 			updateDucks(deltaTime);
 			checkCollisions();
@@ -77,7 +82,7 @@ public class World {
 	}
 
 	private void checkDogState() {
-		if(dog.state == Dog.DOG_STATE_HIDDEN)
+		if (dog.state == Dog.DOG_STATE_HIDDEN)
 			state = WORLD_STATE_RUNNING;
 	}
 

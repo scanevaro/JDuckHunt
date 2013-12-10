@@ -24,12 +24,14 @@ public class Assets {
 	public static TextureRegion menuCursor;
 	public static TextureRegion dogFound;
 	public static TextureRegion uiShot;
-	public static TextureRegion ui9Ducks;
+	public static TextureRegion uiDucksRound;
 	public static TextureRegion uiScore;
 	public static TextureRegion presentRound;
 	public static TextureRegion ui3Shots;
 	public static TextureRegion ui2Shots;
 	public static TextureRegion ui1Shots;
+	public static TextureRegion uiWhiteDuck;
+	public static TextureRegion uiRedDuck;
 
 	public static Animation duckFly;
 	public static Animation dogWalking;
@@ -89,12 +91,14 @@ public class Assets {
 		gameMode2 = items.findRegion("gameMode2");
 		menuCursor = items.findRegion("menuCursor");
 		uiShot = items.findRegion("uiShot");
-		ui9Ducks = items.findRegion("ui9Ducks");
+		uiDucksRound = items.findRegion("uiDucksRound");
 		uiScore = items.findRegion("uiScore");
 		presentRound = items.findRegion("presentRound");
 		ui3Shots = items.findRegion("ui3Shots");
 		ui2Shots = items.findRegion("ui2Shots");
 		ui1Shots = items.findRegion("ui1Shots");
+		uiWhiteDuck = items.findRegion("uiWhiteDuck");
+		uiRedDuck = items.findRegion("uiRedDuck");
 	}
 
 	private static void loadFont() {

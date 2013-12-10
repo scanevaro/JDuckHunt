@@ -12,15 +12,20 @@ public class Duck extends DynamicGameObject {
 	public static final int DUCK_STATE_FLYING = 0;
 	public static final int DUCK_STATE_HIT = 1;
 	public static final int DUCK_STATE_FALLING = 2;
+	public static final int DUCK_STATE_STANDBY = 3;
+	public static final int DUCK_STATE_DEAD = 4;
+	public static final int DUCK_STATE_FLY_AWAY = 6;
 	public static final float DUCK_VELOCITY = 5;
 	public static final float DUCK_GRAVITY = -0.5f;
 	public static final float DUCK_WIDTH = 1.25f;
 	public static final float DUCK_HEIGHT = 1.25f;
 
 	public TextureRegion texture;
+	public TextureRegion uiTexture;
 	public float side;
 	public int state;
 	public float stateTime;
+	public float uiStateTime;
 	private Random rand;
 	private int frames;
 
@@ -29,13 +34,18 @@ public class Duck extends DynamicGameObject {
 		state = DUCK_STATE_FLYING;
 		velocity.set(DUCK_VELOCITY, DUCK_VELOCITY);
 		stateTime = 0;
+		uiStateTime = 0;
 		rand = new Random();
-		texture = Assets.duckFly.getKeyFrame(stateTime);
+		uiTexture = Assets.uiWhiteDuck;
 	}
 
 	public void update(float deltaTime) {
 
 		switch (state) {
+		case DUCK_STATE_STANDBY:
+			uiTexture = Assets.uiWhiteDuck;
+			texture = null;
+			break;
 		case DUCK_STATE_FLYING:
 			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
 			bounds.x = position.x - DUCK_WIDTH / 2;
@@ -79,6 +89,15 @@ public class Duck extends DynamicGameObject {
 				frames = 0;
 			}
 			texture = Assets.duckFly.getKeyFrame(stateTime, true);
+
+			if (uiStateTime < 1.5f)
+				uiTexture = null;
+			else if (uiStateTime < 3)
+				uiTexture = Assets.uiWhiteDuck;
+			else
+				uiStateTime = 0;
+
+			uiStateTime += deltaTime;
 			break;
 		case DUCK_STATE_HIT:
 			if (stateTime > 1.0f) {
@@ -92,8 +111,19 @@ public class Duck extends DynamicGameObject {
 			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
 			bounds.x = position.x - DUCK_WIDTH / 2;
 			bounds.y = position.y - DUCK_HEIGHT / 2;
+			
+			if(position.y < 2){
+				state = DUCK_STATE_DEAD;
+				//Assets.hitGround.play();
+			}
 
 			texture = Assets.duckFalling;
+			break;
+		case DUCK_STATE_DEAD:
+			uiTexture = Assets.uiRedDuck;
+			break;
+		case DUCK_STATE_FLY_AWAY:
+			uiTexture = Assets.uiWhiteDuck;
 			break;
 		}
 

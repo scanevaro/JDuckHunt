@@ -71,34 +71,12 @@ public class WorldRenderer {
 			TextureRegion texture = duck.texture;
 			float x = duck.position.x;
 			float y = duck.position.y;
-			float width = duck.side * Duck.DUCK_WIDTH;
+			float width = Duck.DUCK_WIDTH;
 			float height = Duck.DUCK_HEIGHT;
 
-			batch.draw(texture, x, y, width, height);
-
-			switch (duck.state) {
-			case Duck.DUCK_STATE_FLYING:
-				float side = duck.velocity.x < 0 ? -1 : 1;
-				if (side < 0)
-					batch.draw(
-							Assets.duckFly.getKeyFrame(duck.stateTime, true),
-							duck.position.x + 0.5f + i, duck.position.y - 0.5f,
-							side * Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
-				else
-					batch.draw(
-							Assets.duckFly.getKeyFrame(duck.stateTime, true),
-							duck.position.x - 0.5f + i, duck.position.y - 0.5f,
-							side * Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
-				break;
-			case Duck.DUCK_STATE_HIT:
-				batch.draw(Assets.duckHit, duck.position.x, duck.position.y,
-						Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
-				break;
-			case Duck.DUCK_STATE_FALLING:
-				batch.draw(Assets.duckFalling, duck.position.x,
-						duck.position.y, Duck.DUCK_WIDTH, Duck.DUCK_WIDTH);
-				break;
-			}
+			float side = duck.velocity.x < 0 ? -1 : 1;
+			if (texture != null)
+				batch.draw(texture, x, y, side * width, height);
 		}
 	}
 }

@@ -156,13 +156,29 @@ public class GameScreen implements Screen {
 				Assets.ui3Shots.getRegionHeight()
 						+ Assets.ui3Shots.getRegionHeight() / 2);
 		batcher.draw(
-				Assets.ui9Ducks,
-				480 / 2 - Assets.ui9Ducks.getRegionWidth() / 2 - 30,
+				Assets.uiDucksRound,
+				480 / 2 - Assets.uiDucksRound.getRegionWidth() / 2 - 30,
 				20,
-				Assets.ui9Ducks.getRegionWidth() * 2
-						- Assets.ui9Ducks.getRegionWidth() / 2,
-				Assets.ui9Ducks.getRegionHeight()
-						+ Assets.ui9Ducks.getRegionHeight() / 2);
+				Assets.uiDucksRound.getRegionWidth() * 2
+						- Assets.uiDucksRound.getRegionWidth() / 2,
+				Assets.uiDucksRound.getRegionHeight()
+						+ Assets.uiDucksRound.getRegionHeight() / 2);
+
+		int x = 0;
+		for (int i = 0; i < world.ducks.size(); i++) {
+			TextureRegion uiDuck = world.ducks.get(i).uiTexture;
+			if (uiDuck != null) {
+				batcher.draw(uiDuck,
+						480 / 2 - Assets.uiWhiteDuck.getRegionWidth() - 29 + x,
+						21, Assets.uiWhiteDuck.getRegionWidth() * 2
+								- Assets.uiWhiteDuck.getRegionWidth() / 2,
+						Assets.uiWhiteDuck.getRegionHeight()
+								+ Assets.uiWhiteDuck.getRegionHeight() / 2);
+			}
+
+			x += 12;
+		}
+
 		batcher.draw(
 				Assets.uiScore,
 				480 - 100,
