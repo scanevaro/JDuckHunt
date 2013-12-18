@@ -105,22 +105,23 @@ public class Duck extends DynamicGameObject {
 				velocity.set(0, DUCK_GRAVITY);
 			}
 			texture = Assets.duckHit;
+			uiTexture = Assets.uiRedDuck;
 			break;
 		case DUCK_STATE_FALLING:
 			velocity.add(0, DUCK_GRAVITY);
 			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
 			bounds.x = position.x - DUCK_WIDTH / 2;
 			bounds.y = position.y - DUCK_HEIGHT / 2;
-			
-			if(position.y < 2){
+
+			if (position.y < 2.5f) {
 				state = DUCK_STATE_DEAD;
-				//Assets.hitGround.play();
+				Assets.hitGround.play();
 			}
 
 			texture = Assets.duckFalling;
 			break;
 		case DUCK_STATE_DEAD:
-			uiTexture = Assets.uiRedDuck;
+			// uiTexture = Assets.uiRedDuck;
 			break;
 		case DUCK_STATE_FLY_AWAY:
 			uiTexture = Assets.uiWhiteDuck;

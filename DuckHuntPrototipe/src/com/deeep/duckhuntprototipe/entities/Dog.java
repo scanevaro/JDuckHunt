@@ -1,10 +1,9 @@
 package com.deeep.duckhuntprototipe.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.deeep.duckhuntprototipe.DuckHuntPrototipe;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.GameObject;
+import com.deeep.duckhuntprototipe.classes.World;
 
 public class Dog extends GameObject {
 
@@ -24,8 +23,9 @@ public class Dog extends GameObject {
 	private int frames;
 	private float dogPositiony;
 	private int gravityY;
+	private World world;
 
-	public Dog(float x, float y) {
+	public Dog(float x, float y, World world) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT);
 		state = DOG_STATE_WALKING;
 		stateTime = 0;
@@ -33,9 +33,11 @@ public class Dog extends GameObject {
 		frames = -1;
 		gravityY = -3;
 		texture = Assets.dogWalking.getKeyFrame(stateTime, true);
+
+		this.world = world;
 	}
 
-	public void update(float deltaTime) {
+	public void update(float deltaTime, int ducksHit) {
 
 		switch (state) {
 		case DOG_STATE_WALKING:
@@ -57,12 +59,12 @@ public class Dog extends GameObject {
 			break;
 		case DOG_STATE_JUMPING:
 			if (frames == -1)
-				Assets.bark.play();
+				Assets.dogBark.play();
 
 			frames++;
 			if (frames > 15) {
 				if (bark < 2) {
-					Assets.bark.play();
+					Assets.dogBark.play();
 					bark++;
 				}
 				frames = 0;
@@ -74,19 +76,33 @@ public class Dog extends GameObject {
 				dogPositiony = 0;
 				position.add(deltaTime, deltaTime * gravityY);
 				gravityY += -1;
-				if (position.y < 3)
+				if (position.y < 3) {
 					state = DOG_STATE_HIDDEN;
+				}
 			}
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
 			break;
 		case DOG_STATE_FOUND_DUCK:
-			/***/
+			if (ducksHit == 1)
+				texture = Assets.dogDuckFound;
+			else
+				texture = Assets.dogDucksFound;
 			break;
 		case DOG_STATE_LAUGHING:
 			texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
 			break;
 		case DOG_STATE_HIDDEN:
 			texture = null;
+
+			if (world.state == World.WORLD_STATE_ROUND_PAUSE) {
+				if (ducksHit == 0) {
+					state = DOG_STATE_LAUGHING;
+					Assets.dogLaughingSnd.play();
+				} else {
+					state = DOG_STATE_FOUND_DUCK;
+					Assets.dogDuckFoundSnd.play();
+				}
+			}
 			break;
 		}
 

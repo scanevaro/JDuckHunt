@@ -32,6 +32,8 @@ public class Assets {
 	public static TextureRegion ui1Shots;
 	public static TextureRegion uiWhiteDuck;
 	public static TextureRegion uiRedDuck;
+	public static TextureRegion dogDuckFound;
+	public static TextureRegion dogDucksFound;
 
 	public static Animation duckFly;
 	public static Animation dogWalking;
@@ -46,8 +48,11 @@ public class Assets {
 
 	public static Sound shoot;
 	public static Sound ducks;
-	public static Sound bark;
+	public static Sound dogBark;
 	public static Sound miss;
+	public static Sound dogLaughingSnd;
+	public static Sound dogDuckFoundSnd;
+	public static Sound hitGround;
 
 	public static void load() {
 		loadAtlas();
@@ -99,6 +104,8 @@ public class Assets {
 		ui1Shots = items.findRegion("ui1Shots");
 		uiWhiteDuck = items.findRegion("uiWhiteDuck");
 		uiRedDuck = items.findRegion("uiRedDuck");
+		dogDuckFound = items.findRegion("dog1Duck");
+		dogDucksFound = items.findRegion("dog2Ducks");
 	}
 
 	private static void loadFont() {
@@ -119,8 +126,15 @@ public class Assets {
 
 		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
 		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
-		bark = Gdx.audio.newSound(Gdx.files.internal("data/sounds/bark.mp3"));
+		dogBark = Gdx.audio
+				.newSound(Gdx.files.internal("data/sounds/bark.mp3"));
 		miss = Gdx.audio.newSound(Gdx.files.internal("data/sounds/miss.mp3"));
+		dogLaughingSnd = Gdx.audio.newSound(Gdx.files
+				.internal("data/sounds/laugh.mp3"));
+		dogDuckFoundSnd = Gdx.audio.newSound(Gdx.files
+				.internal("data/sounds/end_duck_round.mp3"));
+		hitGround = Gdx.audio.newSound(Gdx.files
+				.internal("data/sounds/drop.mp3"));
 	}
 
 	public static void playSound(Sound sound) {

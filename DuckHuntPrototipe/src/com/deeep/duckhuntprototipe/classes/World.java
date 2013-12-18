@@ -23,6 +23,7 @@ public class World {
 	public static final float WORLD_HEIGHT = 10;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_ROUND_START = 1;
+	public static final int WORLD_STATE_ROUND_PAUSE = 2;
 	public static final int GAME_MODE_1 = 0;
 	public static final int GAME_MODE_2 = 1;
 
@@ -33,6 +34,9 @@ public class World {
 
 	public int state;
 	public int gameMode;
+	public int duckCount;
+	public int ducksHit;
+	public boolean checkDucksRoundPause;
 
 	Vector3 touchPoint;
 
@@ -42,43 +46,40 @@ public class World {
 		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
-		dog = new Dog(0, 1.9f);
+		dog = new Dog(0, 1.9f, this);
 		generateLevel();
 
+		duckCount = 0;
 		this.state = WORLD_STATE_ROUND_START;
 	}
 
 	private void generateLevel() {
-		if (gameMode == GAME_MODE_1) {
-			for (int i = 0; i < 1; i++) {
-				float random = rand.nextFloat() > 0.5f ? 6.5f : 8.5f;
-				Duck duck = new Duck(random, 2f);
-				ducks.add(duck);
-			}
-		} else {
-			float random = rand.nextFloat() > 0.5f ? 5.5f : 6.5f;
+		for (int i = 0; i < 10; i++) {
+			float random = rand.nextFloat() > 0.5f ? 6.5f : 8.5f;
 			Duck duck = new Duck(random, 2f);
 			ducks.add(duck);
-
-			float random2 = rand.nextFloat() > 0.5f ? 8.5f : 9.5f;
-			Duck duck2 = new Duck(random2, 2f);
-			ducks.add(duck2);
 		}
 	}
 
 	public void update(float deltaTime) {
 		if (state == WORLD_STATE_ROUND_START) {
-			updateDog(deltaTime);
+			updateDog(deltaTime, ducksHit);
 			checkDogState();
-		} else {
-			updateDog(deltaTime);
+		} else if (state == WORLD_STATE_RUNNING) {
+			updateDog(deltaTime, ducksHit);
 			updateDucks(deltaTime);
 			checkCollisions();
+			checkDucksRoundPause = true;
+		} else if (state == WORLD_STATE_ROUND_PAUSE) {
+			if (checkDucksRoundPause)
+				checkDucksRoundPause();
+			updateDog(deltaTime, ducksHit);
+			checkDogState();
 		}
 	}
 
-	private void updateDog(float deltaTime) {
-		dog.update(deltaTime);
+	private void updateDog(float deltaTime, int duckCount) {
+		dog.update(deltaTime, duckCount);
 	}
 
 	private void checkDogState() {
@@ -87,41 +88,67 @@ public class World {
 	}
 
 	private void updateDucks(float deltaTime) {
-		int len = ducks.size();
-		for (int i = 0; i < len; i++) {
-			Duck duck = ducks.get(i);
-			duck.update(deltaTime);
-
-			if (duck.position.y < 0) {
-				ducks.remove(i);
-			}
-		}
-
-		if (ducks.size() == 0) {
-			if (gameMode == GAME_MODE_1) {
-				Duck duck = new Duck(8.5f, 5f);
-				ducks.add(duck);
-			} else {
-				Duck duck = new Duck(8.5f, 5f);
-				ducks.add(duck);
-
-				Duck duck2 = new Duck(6.5f, 5f);
-			}
+		if (gameMode == GAME_MODE_1)
+			ducks.get(duckCount).update(deltaTime);
+		else {
+			ducks.get(duckCount).update(deltaTime);
+			ducks.get(duckCount + 1).update(deltaTime);
 		}
 	}
 
 	private void checkCollisions() {
 		checkDuckCollision();
+		checkDuckStates();
 	}
 
 	private void checkDuckCollision() {
-		for (int i = 0; i < ducks.size(); i++) {
-			Duck duck = ducks.get(i);
-			if (Gdx.input.justTouched()) {
-				if (duck.bounds.contains(touchPoint.x, touchPoint.y)) {
-					duck.hit();
-				}
+		if (gameMode == GAME_MODE_1) {
+			Duck duck = ducks.get(duckCount);
+			if (Gdx.input.justTouched()
+					&& duck.bounds.contains(touchPoint.x, touchPoint.y)) {
+				duck.hit();
 			}
+		} else {
+			Duck duck = ducks.get(duckCount);
+			if (Gdx.input.justTouched()
+					&& duck.bounds.contains(touchPoint.x, touchPoint.y)) {
+				duck.hit();
+			}
+
+			Duck duck2 = ducks.get(duckCount + 1);
+			if (Gdx.input.justTouched()
+					&& duck2.bounds.contains(touchPoint.x, touchPoint.y)) {
+				duck2.hit();
+			}
+		}
+	}
+
+	private void checkDuckStates() {
+		if (gameMode == GAME_MODE_1) {
+			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD)
+				state = WORLD_STATE_ROUND_PAUSE;
+		} else {
+			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD
+					&& ducks.get(duckCount + 1).state == Duck.DUCK_STATE_DEAD)
+				state = WORLD_STATE_ROUND_PAUSE;
+		}
+	}
+
+	private void checkDucksRoundPause() {
+		ducksHit = 0;
+		if (gameMode == GAME_MODE_1) {
+			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD) {
+				ducksHit++;
+				checkDucksRoundPause = false;
+			}
+		} else {
+			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD)
+				ducksHit++;
+
+			if (ducks.get(duckCount + 1).state == Duck.DUCK_STATE_DEAD)
+				ducksHit++;
+
+			checkDucksRoundPause = false;
 		}
 	}
 }
