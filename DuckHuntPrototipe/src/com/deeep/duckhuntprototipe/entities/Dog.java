@@ -83,10 +83,23 @@ public class Dog extends GameObject {
 			texture = Assets.dogJumping.getKeyFrame(stateTime);
 			break;
 		case DOG_STATE_FOUND_DUCK:
+			if (stateTime < 0.5)
+				position.add(0, deltaTime * 3);
+			else if (stateTime < 0.7f) {
+			} else
+				position.add(0, -deltaTime * 3);
+
+			if (stateTime > 1) {
+				state = DOG_STATE_HIDDEN;
+				world.state = World.WORLD_STATE_RUNNING;
+				world.duckCount++;
+			}
+
 			if (ducksHit == 1)
 				texture = Assets.dogDuckFound;
 			else
 				texture = Assets.dogDucksFound;
+
 			break;
 		case DOG_STATE_LAUGHING:
 			texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
@@ -95,6 +108,7 @@ public class Dog extends GameObject {
 			texture = null;
 
 			if (world.state == World.WORLD_STATE_ROUND_PAUSE) {
+				stateTime = 0;
 				if (ducksHit == 0) {
 					state = DOG_STATE_LAUGHING;
 					Assets.dogLaughingSnd.play();
@@ -102,6 +116,7 @@ public class Dog extends GameObject {
 					state = DOG_STATE_FOUND_DUCK;
 					Assets.dogDuckFoundSnd.play();
 				}
+				return;
 			}
 			break;
 		}
