@@ -3,11 +3,9 @@ package com.deeep.duckhuntprototipe.classes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
@@ -53,6 +51,7 @@ public class Assets {
 	public static Sound dogLaughingSnd;
 	public static Sound dogDuckFoundSnd;
 	public static Sound hitGround;
+	public static Sound duckFallingSnd;
 
 	public static void load() {
 		loadAtlas();
@@ -135,6 +134,8 @@ public class Assets {
 				.internal("data/sounds/end_duck_round.mp3"));
 		hitGround = Gdx.audio.newSound(Gdx.files
 				.internal("data/sounds/drop.mp3"));
+		duckFallingSnd = Gdx.audio.newSound(Gdx.files
+				.internal("data/sounds/duck_falling.mp3"));
 	}
 
 	public static void playSound(Sound sound) {
