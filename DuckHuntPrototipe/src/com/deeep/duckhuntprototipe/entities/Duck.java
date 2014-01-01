@@ -103,6 +103,7 @@ public class Duck extends DynamicGameObject {
 			if (stateTime > 1.0f) {
 				state = DUCK_STATE_FALLING;
 				velocity.set(0, DUCK_GRAVITY);
+				Assets.playSound(Assets.duckFallingSnd);
 			}
 			texture = Assets.duckHit;
 			uiTexture = Assets.uiRedDuck;
@@ -118,7 +119,14 @@ public class Duck extends DynamicGameObject {
 				Assets.hitGround.play();
 			}
 
-			texture = Assets.duckFalling;
+			frames++;
+			if (frames > 4) {
+				Assets.duckFalling.flip(true, false);
+				texture = Assets.duckFalling;
+				frames = 0;
+			} else
+				texture = Assets.duckFalling;
+			
 			break;
 		case DUCK_STATE_DEAD:
 			// uiTexture = Assets.uiRedDuck;
