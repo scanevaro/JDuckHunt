@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
 	WorldListener worldListener;
 	WorldRenderer renderer;
 	String round;
-	private int shots;
+	public static int shots;
 
 	public GameScreen(Game game, int gameMode) {
 		this.game = game;
@@ -85,11 +85,12 @@ public class GameScreen implements Screen {
 	private void updateRunning(float deltaTime) {
 		if (state == GAME_RUNNING) {
 			if (Gdx.input.justTouched()) {
-				// si quisiera usar algo del UI, está este touchPoint
-				guiCam.unproject(touchPoint.set(Gdx.input.getX(),
-						Gdx.input.getY(), 0));
-				Assets.playSound(Assets.shoot);
-				shots--;
+				if (shots > 0) {
+					guiCam.unproject(touchPoint.set(Gdx.input.getX(),
+							Gdx.input.getY(), 0));
+					Assets.playSound(Assets.shoot);
+					shots--;
+				}
 			}
 		}
 		// ApplicationType appType = Gdx.app.getType();

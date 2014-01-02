@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.DynamicGameObject;
 import com.deeep.duckhuntprototipe.classes.World;
+import com.deeep.duckhuntprototipe.screens.GameScreen;
 
 public class Duck extends DynamicGameObject {
 
@@ -47,92 +48,19 @@ public class Duck extends DynamicGameObject {
 			texture = null;
 			break;
 		case DUCK_STATE_FLYING:
-			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-			bounds.x = position.x - DUCK_WIDTH / 2;
-			bounds.y = position.y - DUCK_HEIGHT / 2;
-
-			if (rand.nextFloat() > 0.999f) {
-				velocity.x = -velocity.x;
-			}
-			if (rand.nextFloat() > 0.999f) {
-				velocity.y = -velocity.y;
-			}
-
-			if (position.x < DUCK_WIDTH / 2) {
-				position.x = DUCK_WIDTH / 2;
-				velocity.x = DUCK_VELOCITY;
-				velocity.y = rand.nextFloat();
-
-			}
-			if (position.x > World.WORLD_WIDTH - DUCK_WIDTH / 2) {
-				position.x = World.WORLD_WIDTH - DUCK_WIDTH / 2;
-				velocity.x = -DUCK_VELOCITY;
-				velocity.y = rand.nextFloat();
-			}
-
-			if (position.y < DUCK_WIDTH / 2) {
-				position.y = DUCK_HEIGHT / 2;
-				velocity.x = DUCK_VELOCITY;
-				velocity.y = rand.nextFloat();
-			}
-
-			if (position.y > World.WORLD_HEIGHT - DUCK_HEIGHT / 2) {
-				position.y = World.WORLD_HEIGHT - DUCK_HEIGHT / 2;
-				velocity.x = -DUCK_VELOCITY;
-				float topBot = rand.nextFloat() > 0.5f ? 1 : -1;
-				velocity.y = rand.nextFloat() * topBot;
-			}
-
-			frames++;
-			if (frames > 7) {
-				Assets.miss.play();
-				frames = 0;
-			}
-			texture = Assets.duckFly.getKeyFrame(stateTime, true);
-
-			if (uiStateTime < 1.5f)
-				uiTexture = null;
-			else if (uiStateTime < 3)
-				uiTexture = Assets.uiWhiteDuck;
-			else
-				uiStateTime = 0;
-
-			uiStateTime += deltaTime;
+			stateFlying(deltaTime);
 			break;
 		case DUCK_STATE_HIT:
-			if (stateTime > 1.0f) {
-				state = DUCK_STATE_FALLING;
-				velocity.set(0, DUCK_GRAVITY);
-				Assets.playSound(Assets.duckFallingSnd);
-			}
-			texture = Assets.duckHit;
-			uiTexture = Assets.uiRedDuck;
+			stateHit();
 			break;
 		case DUCK_STATE_FALLING:
-			velocity.add(0, DUCK_GRAVITY);
-			position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-			bounds.x = position.x - DUCK_WIDTH / 2;
-			bounds.y = position.y - DUCK_HEIGHT / 2;
-
-			if (position.y < 2.5f) {
-				state = DUCK_STATE_DEAD;
-				Assets.hitGround.play();
-			}
-
-			frames++;
-			if (frames > 4) {
-				Assets.duckFalling.flip(true, false);
-				texture = Assets.duckFalling;
-				frames = 0;
-			} else
-				texture = Assets.duckFalling;
-			
+			stateFalling(deltaTime);
 			break;
 		case DUCK_STATE_DEAD:
 			// uiTexture = Assets.uiRedDuck;
 			break;
 		case DUCK_STATE_FLY_AWAY:
-			uiTexture = Assets.uiWhiteDuck;
+			stateFlyAway();
 			break;
 		}
 
@@ -147,5 +75,103 @@ public class Duck extends DynamicGameObject {
 
 	public void dead() {
 		/***/
+	}
+
+	private void stateFalling(float deltaTime) {
+		velocity.add(0, DUCK_GRAVITY);
+		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+		bounds.x = position.x - DUCK_WIDTH / 2;
+		bounds.y = position.y - DUCK_HEIGHT / 2;
+
+		if (position.y < 2.5f) {
+			state = DUCK_STATE_DEAD;
+			Assets.hitGround.play();
+		}
+
+		frames++;
+		if (frames > 4) {
+			Assets.duckFalling.flip(true, false);
+			texture = Assets.duckFalling;
+			frames = 0;
+		} else
+			texture = Assets.duckFalling;
+
+	}
+
+	private void stateHit() {
+		if (stateTime > 1.0f) {
+			state = DUCK_STATE_FALLING;
+			velocity.set(0, DUCK_GRAVITY);
+			Assets.playSound(Assets.duckFallingSnd);
+		}
+		texture = Assets.duckHit;
+		uiTexture = Assets.uiRedDuck;
+	}
+
+	private void stateFlying(float deltaTime) {
+		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+		bounds.x = position.x - DUCK_WIDTH / 2;
+		bounds.y = position.y - DUCK_HEIGHT / 2;
+
+		if (GameScreen.shots == 0) {
+			state = DUCK_STATE_FLY_AWAY;
+			return;
+		} else if (stateTime > 5f) {
+			state = DUCK_STATE_FLY_AWAY;
+			return;
+		}
+
+		if (rand.nextFloat() > 0.999f) {
+			velocity.x = -velocity.x;
+		}
+		if (rand.nextFloat() > 0.999f) {
+			velocity.y = -velocity.y;
+		}
+
+		if (position.x < DUCK_WIDTH / 2) {
+			position.x = DUCK_WIDTH / 2;
+			velocity.x = DUCK_VELOCITY;
+			velocity.y = rand.nextFloat();
+
+		}
+		if (position.x > World.WORLD_WIDTH - DUCK_WIDTH / 2) {
+			position.x = World.WORLD_WIDTH - DUCK_WIDTH / 2;
+			velocity.x = -DUCK_VELOCITY;
+			velocity.y = rand.nextFloat();
+		}
+
+		if (position.y < DUCK_WIDTH / 2) {
+			position.y = DUCK_HEIGHT / 2;
+			velocity.x = DUCK_VELOCITY;
+			velocity.y = rand.nextFloat();
+		}
+
+		if (position.y > World.WORLD_HEIGHT - DUCK_HEIGHT / 2) {
+			position.y = World.WORLD_HEIGHT - DUCK_HEIGHT / 2;
+			velocity.x = -DUCK_VELOCITY;
+			float topBot = rand.nextFloat() > 0.5f ? 1 : -1;
+			velocity.y = rand.nextFloat() * topBot;
+		}
+
+		frames++;
+		if (frames > 7) {
+			Assets.miss.play();
+			frames = 0;
+		}
+		texture = Assets.duckFly.getKeyFrame(stateTime, true);
+
+		if (uiStateTime < 1.5f)
+			uiTexture = null;
+		else if (uiStateTime < 3)
+			uiTexture = Assets.uiWhiteDuck;
+		else
+			uiStateTime = 0;
+
+		uiStateTime += deltaTime;
+	}
+
+	private void stateFlyAway() {
+		uiTexture = Assets.uiWhiteDuck;
+
 	}
 }

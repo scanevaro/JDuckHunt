@@ -125,7 +125,8 @@ public class World {
 
 	private void checkDuckStates() {
 		if (gameMode == GAME_MODE_1) {
-			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD)
+			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD
+					|| ducks.get(duckCount).state == Duck.DUCK_STATE_FLY_AWAY)
 				state = WORLD_STATE_ROUND_PAUSE;
 		} else {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD
@@ -140,7 +141,8 @@ public class World {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD) {
 				ducksHit++;
 				checkDucksRoundPause = false;
-			}
+			} else
+				checkDucksRoundPause = false;
 		} else {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD)
 				ducksHit++;
