@@ -3,8 +3,6 @@ package com.deeep.duckhuntprototipe.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -114,15 +112,6 @@ public class GameScreen implements Screen {
 	}
 
 	public void draw(float deltaTime) {
-		GLCommon gl = Gdx.gl;
-
-		if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY))
-			gl.glClearColor(0.392156f, 0.686274f, 1, 1);
-		else
-			gl.glClearColor(1, 1, 1, 1);
-
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
 		renderer.render();
 
 		guiCam.update();

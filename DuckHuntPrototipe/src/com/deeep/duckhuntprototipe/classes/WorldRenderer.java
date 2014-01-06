@@ -1,6 +1,7 @@
 package com.deeep.duckhuntprototipe.classes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,6 +25,8 @@ public class WorldRenderer {
 	}
 
 	public void render() {
+		clearScreen();
+
 		cam.update();
 		cam.unproject(world.touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),
 				0));
@@ -39,6 +42,16 @@ public class WorldRenderer {
 			renderObjects();
 			renderBackground();
 		}
+	}
+
+	// also draws the background color
+	private void clearScreen() {
+		if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY))
+			Gdx.gl.glClearColor(0.392156f, 0.686274f, 1, 1);
+		else
+			Gdx.gl.glClearColor(1, 0.823529f, 0.3764705f, 1);
+
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	}
 
 	private void renderBackground() {

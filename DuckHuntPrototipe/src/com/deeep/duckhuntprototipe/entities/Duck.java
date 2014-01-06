@@ -184,7 +184,7 @@ public class Duck extends DynamicGameObject {
 			frames = 0;
 		}
 
-		if (stateTime > 3) {
+		if (position.y > World.WORLD_HEIGHT + DUCK_HEIGHT) {
 			state = DUCK_STATE_GONE;
 		}
 

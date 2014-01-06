@@ -36,6 +36,7 @@ public class World {
 	public int gameMode;
 	public int duckCount;
 	public int ducksHit;
+	public float stateTime;
 	public boolean checkDucksRoundPause;
 
 	Vector3 touchPoint;
@@ -50,6 +51,7 @@ public class World {
 		generateLevel();
 
 		duckCount = 0;
+		stateTime = 0;
 		this.state = WORLD_STATE_ROUND_START;
 	}
 
@@ -71,11 +73,17 @@ public class World {
 			checkCollisions();
 			checkDucksRoundPause = true;
 		} else if (state == WORLD_STATE_ROUND_PAUSE) {
-			if (checkDucksRoundPause)
+			if (checkDucksRoundPause) {
 				checkDucksRoundPause();
-			updateDog(deltaTime, ducksHit);
-			checkDogState();
+				dog.position.x = ducks.get(ducksHit - 1).position.x;
+			}
+			if (stateTime > 2) {
+				updateDog(deltaTime, ducksHit);
+				checkDogState();
+			}
 		}
+
+		stateTime += deltaTime;
 	}
 
 	private void updateDog(float deltaTime, int duckCount) {
@@ -154,5 +162,7 @@ public class World {
 
 			checkDucksRoundPause = false;
 		}
+
+		stateTime = 0;
 	}
 }
