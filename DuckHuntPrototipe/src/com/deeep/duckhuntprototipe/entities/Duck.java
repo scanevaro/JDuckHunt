@@ -16,6 +16,7 @@ public class Duck extends DynamicGameObject {
 	public static final int DUCK_STATE_STANDBY = 3;
 	public static final int DUCK_STATE_DEAD = 4;
 	public static final int DUCK_STATE_FLY_AWAY = 6;
+	public static final int DUCK_STATE_GONE = 7;
 	public static final float DUCK_VELOCITY = 5;
 	public static final float DUCK_GRAVITY = -0.5f;
 	public static final float DUCK_WIDTH = 1.25f;
@@ -60,7 +61,10 @@ public class Duck extends DynamicGameObject {
 			// uiTexture = Assets.uiRedDuck;
 			break;
 		case DUCK_STATE_FLY_AWAY:
-			stateFlyAway();
+			stateFlyAway(deltaTime);
+			break;
+		case DUCK_STATE_GONE:
+			stateGone();
 			break;
 		}
 
@@ -116,8 +120,9 @@ public class Duck extends DynamicGameObject {
 		if (GameScreen.shots == 0) {
 			state = DUCK_STATE_FLY_AWAY;
 			return;
-		} else if (stateTime > 5f) {
+		} else if (stateTime > 8f) {
 			state = DUCK_STATE_FLY_AWAY;
+			stateTime = 0;
 			return;
 		}
 
@@ -170,8 +175,23 @@ public class Duck extends DynamicGameObject {
 		uiStateTime += deltaTime;
 	}
 
-	private void stateFlyAway() {
-		uiTexture = Assets.uiWhiteDuck;
+	private void stateFlyAway(float deltaTime) {
+		position.add(0, deltaTime * 5);
 
+		frames++;
+		if (frames > 7) {
+			Assets.miss.play();
+			frames = 0;
+		}
+
+		if (stateTime > 3) {
+			state = DUCK_STATE_GONE;
+		}
+
+		uiTexture = Assets.uiWhiteDuck;
+	}
+
+	private void stateGone() {
+		uiTexture = Assets.uiWhiteDuck;
 	}
 }

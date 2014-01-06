@@ -32,6 +32,7 @@ public class Assets {
 	public static TextureRegion uiRedDuck;
 	public static TextureRegion dogDuckFound;
 	public static TextureRegion dogDucksFound;
+	public static TextureRegion presentFlyAway;
 
 	public static Animation duckFly;
 	public static Animation dogWalking;
@@ -98,6 +99,7 @@ public class Assets {
 		uiDucksRound = items.findRegion("uiDucksRound");
 		uiScore = items.findRegion("uiScore");
 		presentRound = items.findRegion("presentRound");
+		presentFlyAway = items.findRegion("presentFlyAway");
 		ui3Shots = items.findRegion("ui3Shots");
 		ui2Shots = items.findRegion("ui2Shots");
 		ui1Shots = items.findRegion("ui1Shots");

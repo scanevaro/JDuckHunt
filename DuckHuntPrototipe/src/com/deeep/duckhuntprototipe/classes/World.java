@@ -126,11 +126,13 @@ public class World {
 	private void checkDuckStates() {
 		if (gameMode == GAME_MODE_1) {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD
-					|| ducks.get(duckCount).state == Duck.DUCK_STATE_FLY_AWAY)
+					|| ducks.get(duckCount).state == Duck.DUCK_STATE_GONE)
 				state = WORLD_STATE_ROUND_PAUSE;
 		} else {
-			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD
-					&& ducks.get(duckCount + 1).state == Duck.DUCK_STATE_DEAD)
+			if ((ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD || ducks
+					.get(duckCount).state == Duck.DUCK_STATE_GONE)
+					&& (ducks.get(duckCount + 1).state == Duck.DUCK_STATE_DEAD || ducks
+							.get(duckCount + 1).state == Duck.DUCK_STATE_GONE))
 				state = WORLD_STATE_ROUND_PAUSE;
 		}
 	}
@@ -141,7 +143,7 @@ public class World {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD) {
 				ducksHit++;
 				checkDucksRoundPause = false;
-			} else
+			} else if (ducks.get(duckCount).state == Duck.DUCK_STATE_GONE)
 				checkDucksRoundPause = false;
 		} else {
 			if (ducks.get(duckCount).state == Duck.DUCK_STATE_DEAD)

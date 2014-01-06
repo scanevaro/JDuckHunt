@@ -14,6 +14,7 @@ import com.deeep.duckhuntprototipe.classes.World;
 import com.deeep.duckhuntprototipe.classes.World.WorldListener;
 import com.deeep.duckhuntprototipe.classes.WorldRenderer;
 import com.deeep.duckhuntprototipe.entities.Dog;
+import com.deeep.duckhuntprototipe.entities.Duck;
 
 public class GameScreen implements Screen {
 
@@ -93,6 +94,9 @@ public class GameScreen implements Screen {
 				}
 			}
 		}
+
+		if (world.state == World.WORLD_STATE_ROUND_PAUSE)
+			shots = 3;
 		// ApplicationType appType = Gdx.app.getType();
 
 		/*
@@ -111,7 +115,12 @@ public class GameScreen implements Screen {
 
 	public void draw(float deltaTime) {
 		GLCommon gl = Gdx.gl;
-		gl.glClearColor(0.392156f, 0.686274f, 1, 1);
+
+		if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY))
+			gl.glClearColor(0.392156f, 0.686274f, 1, 1);
+		else
+			gl.glClearColor(1, 1, 1, 1);
+
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		renderer.render();
@@ -192,9 +201,18 @@ public class GameScreen implements Screen {
 	}
 
 	private void presentRunning() {
-		// USER INTERFACE DRAW
-		// batcher.draw(Assets.pause, 480 - 32, 32, 32, 32);
-		// Assets.font.draw(batcher, scoreString, 16, 480 - 20);
+		if (world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY) {
+			batcher.draw(Assets.presentFlyAway,
+					480 / 2 - Assets.presentFlyAway.getRegionWidth(),
+					320 / 2 + 30, Assets.presentFlyAway.getRegionWidth()
+							+ Assets.presentFlyAway.getRegionWidth(),
+					Assets.presentFlyAway.getRegionHeight()
+							+ Assets.presentFlyAway.getRegionHeight());
+			Assets.font.setScale(0.45f, 0.5f);
+			Assets.font.draw(batcher, "FLY AWAY", 480 / 2
+					- Assets.presentFlyAway.getRegionWidth() / 2 - 15,
+					Gdx.graphics.getHeight() / 2 + 45);
+		}
 	}
 
 	private void presentReady() {
