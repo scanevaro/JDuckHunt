@@ -39,11 +39,13 @@ public class Assets {
 	public static Animation dogJumping;
 	public static Animation dogLaughing;
 	public static Animation ui0Shots;
+	public static Animation uiDucks;
 
 	public static BitmapFont font;
 
 	public static Music duckHunt;
 	public static Music startRound;
+	public static Music endRound;
 
 	public static Sound shoot;
 	public static Sound ducks;
@@ -79,15 +81,18 @@ public class Assets {
 		dogJumping = new Animation(0.8f,
 				((TextureRegion) items.findRegion("dogJump1")),
 				((TextureRegion) items.findRegion("dogJump2")));
-		dogLaughing = new Animation(0.2f,
-				((TextureRegion) items.findRegion("dogLaughing1")),
-				((TextureRegion) items.findRegion("dogLaughing2")));
+		dogLaughing = new Animation(0.1f,
+				((TextureRegion) items.findRegion("dogLaugh1")),
+				((TextureRegion) items.findRegion("dogLaugh2")));
 		duckFly = new Animation(0.2f,
 				((TextureRegion) items.findRegion("duckFlyRight1")),
 				((TextureRegion) items.findRegion("duckFlyRight2")));
 		ui0Shots = new Animation(0.4f,
 				((TextureRegion) items.findRegion("ui0Shots1")),
 				((TextureRegion) items.findRegion("ui0Shots2")));
+		uiDucks = new Animation(0.4f,
+				((TextureRegion) items.findRegion("uiWhiteDuck")),
+				((TextureRegion) items.findRegion("uiRedDuck")));
 
 		duckHit = items.findRegion("duckHit");
 		duckFalling = items.findRegion("duckFalling");
@@ -124,6 +129,8 @@ public class Assets {
 		duckHunt.setVolume(0.5f);
 		startRound = Gdx.audio.newMusic(Gdx.files
 				.internal("data/sounds/start_round.mp3"));
+		endRound = Gdx.audio.newMusic((Gdx.files
+				.internal("data/sounds/end_round.mp3")));
 
 		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
 		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));

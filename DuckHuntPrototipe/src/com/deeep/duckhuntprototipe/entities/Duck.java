@@ -25,7 +25,7 @@ public class Duck extends DynamicGameObject {
 	public TextureRegion texture;
 	public TextureRegion uiTexture;
 	public float side;
-	public int state;
+	public Integer state;
 	public float stateTime;
 	public float uiStateTime;
 	private Random rand;
@@ -44,28 +44,28 @@ public class Duck extends DynamicGameObject {
 	public void update(float deltaTime) {
 
 		switch (state) {
-		case DUCK_STATE_STANDBY:
-			uiTexture = Assets.uiWhiteDuck;
-			texture = null;
-			break;
-		case DUCK_STATE_FLYING:
-			stateFlying(deltaTime);
-			break;
-		case DUCK_STATE_HIT:
-			stateHit();
-			break;
-		case DUCK_STATE_FALLING:
-			stateFalling(deltaTime);
-			break;
-		case DUCK_STATE_DEAD:
-			// uiTexture = Assets.uiRedDuck;
-			break;
-		case DUCK_STATE_FLY_AWAY:
-			stateFlyAway(deltaTime);
-			break;
-		case DUCK_STATE_GONE:
-			stateGone();
-			break;
+			case DUCK_STATE_STANDBY:
+				uiTexture = Assets.uiWhiteDuck;
+				texture = null;
+				break;
+			case DUCK_STATE_FLYING:
+				stateFlying(deltaTime);
+				break;
+			case DUCK_STATE_HIT:
+				stateHit();
+				break;
+			case DUCK_STATE_FALLING:
+				stateFalling(deltaTime);
+				break;
+			case DUCK_STATE_DEAD:
+				// uiTexture = Assets.uiRedDuck;
+				break;
+			case DUCK_STATE_FLY_AWAY:
+				stateFlyAway(deltaTime);
+				break;
+			case DUCK_STATE_GONE:
+				stateGone();
+				break;
 		}
 
 		stateTime += deltaTime;
