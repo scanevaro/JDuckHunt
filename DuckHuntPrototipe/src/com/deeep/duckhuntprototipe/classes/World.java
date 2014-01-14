@@ -96,13 +96,14 @@ public class World {
 				if (stateTime > 2) {
 					updateDog(deltaTime, ducksHit);
 					checkDogState();
-
 				}
 
 				if (duckCount > 9) {
 					state = WORLD_STATE_ROUND_END;
 					stateTime = 0;
+					duckCount = 0;
 					Assets.endRound.play();
+
 					Collections.sort(ducks, new Comparator<Duck>() {
 						@Override
 						public int compare(Duck arg0, Duck arg1) {
@@ -128,12 +129,8 @@ public class World {
 
 	private void checkDogState() {
 		if (dog.state == Dog.DOG_STATE_HIDDEN) {
-			if (duckCount == 9) {
-
-			} else {
-				state = WORLD_STATE_RUNNING;
-				checkDucksRoundPause = true;
-			}
+			state = WORLD_STATE_RUNNING;
+			checkDucksRoundPause = true;
 		}
 	}
 
@@ -218,6 +215,6 @@ public class World {
 	}
 
 	private void checkDucksHit() {
-		
+
 	}
 }

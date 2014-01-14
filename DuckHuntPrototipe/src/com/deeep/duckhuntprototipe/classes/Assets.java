@@ -90,7 +90,7 @@ public class Assets {
 		ui0Shots = new Animation(0.4f,
 				((TextureRegion) items.findRegion("ui0Shots1")),
 				((TextureRegion) items.findRegion("ui0Shots2")));
-		uiDucks = new Animation(0.4f,
+		uiDucks = new Animation(0.2f,
 				((TextureRegion) items.findRegion("uiWhiteDuck")),
 				((TextureRegion) items.findRegion("uiRedDuck")));
 
