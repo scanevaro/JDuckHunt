@@ -32,9 +32,9 @@ public class World {
 	public static final int GAME_MODE_2 = 1;
 
 	public final List<Duck> ducks;
-	public final Random rand;
 	public final WorldListener listener;
 	public final Dog dog;
+	public final Random rand;
 
 	public int state;
 	public int gameMode;
@@ -60,6 +60,7 @@ public class World {
 	}
 
 	private void generateLevel() {
+		ducks.clear();
 		for (int i = 0; i < 10; i++) {
 			float random = rand.nextFloat() > 0.5f ? 6.5f : 8.5f;
 			Duck duck = new Duck(random, 2f);
@@ -117,6 +118,14 @@ public class World {
 
 				if (stateTime > 3)
 					checkDucksHit();
+
+				if (stateTime > 5) {
+					newRound();
+					state = WORLD_STATE_NEW_ROUND;
+					dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
+					dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH
+							/ 4, 1.9f);
+				}
 
 				break;
 		}
@@ -216,5 +225,10 @@ public class World {
 
 	private void checkDucksHit() {
 
+	}
+
+	private void newRound() {
+		generateLevel();
+		// round++;
 	}
 }

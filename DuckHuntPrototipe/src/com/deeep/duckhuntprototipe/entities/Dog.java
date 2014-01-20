@@ -13,6 +13,7 @@ public class Dog extends GameObject {
 	public static final int DOG_STATE_FOUND_DUCK = 3;
 	public static final int DOG_STATE_HIDDEN = 4;
 	public static final int DOG_STATE_LAUGHING = 5;
+	public static final int DOG_STATE_WALKING_NEW_ROUND = 6;
 	public static final float DOG_WIDTH = 2f;
 	public static final float DOG_HEIGHT = 2f;
 
@@ -40,40 +41,53 @@ public class Dog extends GameObject {
 	public void update(float deltaTime, int ducksHit) {
 
 		switch (state) {
-		case DOG_STATE_WALKING:
-			stateWalking(deltaTime);
-			break;
-		case DOG_STATE_FOUND:
-			stateFound();
-			break;
-		case DOG_STATE_JUMPING:
-			stateJumping(deltaTime);
-			break;
-		case DOG_STATE_FOUND_DUCK:
-			stateFoundDuck(deltaTime, ducksHit);
-			break;
-		case DOG_STATE_LAUGHING:
-			stateLaughing(deltaTime);
-			break;
-		case DOG_STATE_HIDDEN:
-			if (stateHidden(ducksHit))
-				return;
-			break;
+			case DOG_STATE_WALKING:
+				stateWalking(deltaTime);
+				break;
+			case DOG_STATE_WALKING_NEW_ROUND:
+				stateWalkingNewRound(deltaTime);
+				break;
+			case DOG_STATE_FOUND:
+				stateFound();
+				break;
+			case DOG_STATE_JUMPING:
+				stateJumping(deltaTime);
+				break;
+			case DOG_STATE_FOUND_DUCK:
+				stateFoundDuck(deltaTime, ducksHit);
+				break;
+			case DOG_STATE_LAUGHING:
+				stateLaughing(deltaTime);
+				break;
+			case DOG_STATE_HIDDEN:
+				if (stateHidden(ducksHit))
+					return;
+				break;
 		}
 
 		stateTime += deltaTime;
 	}
 
-	private boolean stateWalking(float deltaTime) {
+	private void stateWalking(float deltaTime) {
 		if (!Assets.startRound.isPlaying()) {
 			state = DOG_STATE_FOUND;
 			stateTime = 0;
-			return true;
+			return;
 		}
+
 		texture = Assets.dogWalking.getKeyFrame(stateTime, true);
 		position.add(deltaTime, 0);
+	}
 
-		return false;
+	private void stateWalkingNewRound(float deltaTime) {
+		if (position.x >= World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 6) {
+			state = DOG_STATE_FOUND;
+			stateTime = 0;
+			return;
+		}
+
+		texture = Assets.dogWalking.getKeyFrame(stateTime, true);
+		position.add(deltaTime, 0);
 	}
 
 	private void stateFound() {

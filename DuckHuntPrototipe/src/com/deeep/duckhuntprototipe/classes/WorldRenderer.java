@@ -35,7 +35,8 @@ public class WorldRenderer {
 
 		if (world.dog.state == Dog.DOG_STATE_WALKING
 				|| world.dog.state == Dog.DOG_STATE_FOUND
-				|| world.dog.state == Dog.DOG_STATE_JUMPING) {
+				|| world.dog.state == Dog.DOG_STATE_JUMPING
+				|| world.dog.state == Dog.DOG_STATE_WALKING_NEW_ROUND) {
 			renderBackground();
 			renderObjects();
 		} else {

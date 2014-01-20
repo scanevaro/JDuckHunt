@@ -72,23 +72,25 @@ public class GameScreen implements Screen {
 			deltaTime = 0.1f;
 
 		switch (state) {
-		case GAME_READY:
-			updateReady(deltaTime);
-			break;
-		case GAME_RUNNING:
-			updateRunning(deltaTime);
-			break;
+			case GAME_READY:
+				updateReady(deltaTime);
+				break;
+			case GAME_RUNNING:
+				updateRunning(deltaTime);
+				break;
 		}
 	}
 
 	private void updateRunning(float deltaTime) {
 		if (state == GAME_RUNNING) {
-			if (Gdx.input.justTouched()) {
-				if (shots > 0) {
-					guiCam.unproject(touchPoint.set(Gdx.input.getX(),
-							Gdx.input.getY(), 0));
-					Assets.playSound(Assets.shoot);
-					shots--;
+			if (world.state == World.WORLD_STATE_RUNNING) {
+				if (Gdx.input.justTouched()) {
+					if (shots > 0) {
+						guiCam.unproject(touchPoint.set(Gdx.input.getX(),
+								Gdx.input.getY(), 0));
+						Assets.playSound(Assets.shoot);
+						shots--;
+					}
 				}
 			}
 		}
@@ -122,12 +124,12 @@ public class GameScreen implements Screen {
 		drawUI(deltaTime);
 
 		switch (state) {
-		case GAME_READY:
-			presentReady();
-			break;
-		case GAME_RUNNING:
-			presentRunning();
-			break;
+			case GAME_READY:
+				presentReady();
+				break;
+			case GAME_RUNNING:
+				presentRunning();
+				break;
 		}
 
 		batcher.end();
