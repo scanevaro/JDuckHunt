@@ -80,7 +80,7 @@ public class Dog extends GameObject {
 	}
 
 	private void stateWalkingNewRound(float deltaTime) {
-		if (position.x >= World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 6) {
+		if (position.x >= World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4) {
 			state = DOG_STATE_FOUND;
 			stateTime = 0;
 			return;

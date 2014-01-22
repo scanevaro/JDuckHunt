@@ -26,8 +26,10 @@ public class Duck extends DynamicGameObject {
 	public TextureRegion uiTexture;
 	public float side;
 	public Integer state;
-	public float stateTime;
 	public float uiStateTime;
+	public float stateTime;
+	private float lastTimeSaved;
+	private float lastTimeSaved2;
 	private Random rand;
 	private int frames;
 
@@ -37,6 +39,8 @@ public class Duck extends DynamicGameObject {
 		velocity.set(DUCK_VELOCITY, DUCK_VELOCITY);
 		stateTime = 0;
 		uiStateTime = 0;
+		lastTimeSaved = 0;
+		lastTimeSaved2 = 0;
 		rand = new Random();
 		uiTexture = Assets.uiWhiteDuck;
 	}
@@ -50,6 +54,7 @@ public class Duck extends DynamicGameObject {
 				break;
 			case DUCK_STATE_FLYING:
 				stateFlying(deltaTime);
+				uiStateFlying(deltaTime);
 				break;
 			case DUCK_STATE_HIT:
 				stateHit();
@@ -69,47 +74,6 @@ public class Duck extends DynamicGameObject {
 		}
 
 		stateTime += deltaTime;
-	}
-
-	public void hit() {
-		velocity.set(0, 0);
-		state = Duck.DUCK_STATE_HIT;
-		stateTime = 0;
-	}
-
-	public void dead() {
-		/***/
-	}
-
-	private void stateFalling(float deltaTime) {
-		velocity.add(0, DUCK_GRAVITY);
-		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-		bounds.x = position.x - DUCK_WIDTH / 2;
-		bounds.y = position.y - DUCK_HEIGHT / 2;
-
-		if (position.y < 2.5f) {
-			state = DUCK_STATE_DEAD;
-			Assets.hitGround.play();
-		}
-
-		frames++;
-		if (frames > 4) {
-			Assets.duckFalling.flip(true, false);
-			texture = Assets.duckFalling;
-			frames = 0;
-		} else
-			texture = Assets.duckFalling;
-
-	}
-
-	private void stateHit() {
-		if (stateTime > 1.0f) {
-			state = DUCK_STATE_FALLING;
-			velocity.set(0, DUCK_GRAVITY);
-			Assets.playSound(Assets.duckFallingSnd);
-		}
-		texture = Assets.duckHit;
-		uiTexture = Assets.uiRedDuck;
 	}
 
 	private void stateFlying(float deltaTime) {
@@ -158,13 +122,24 @@ public class Duck extends DynamicGameObject {
 			velocity.y = rand.nextFloat() * topBot;
 		}
 
-		frames++;
-		if (frames > 7) {
-			Assets.miss.play();
-			frames = 0;
+		if (stateTime > 0.125f) {
+			if ((stateTime - lastTimeSaved) >= 0.125f) {
+				Assets.miss.play();
+				lastTimeSaved = stateTime;
+			}
 		}
-		texture = Assets.duckFly.getKeyFrame(stateTime, true);
 
+		if (stateTime > 1.3f) {
+			if ((stateTime - lastTimeSaved2) >= 2f) {
+				Assets.cuak.play();
+				lastTimeSaved2 = stateTime;
+			}
+		}
+
+		texture = Assets.duckFly.getKeyFrame(stateTime, true);
+	}
+
+	private void uiStateFlying(float deltaTime) {
 		if (uiStateTime < 1.5f)
 			uiTexture = null;
 		else if (uiStateTime < 3)
@@ -173,6 +148,47 @@ public class Duck extends DynamicGameObject {
 			uiStateTime = 0;
 
 		uiStateTime += deltaTime;
+	}
+
+	public void hit() {
+		velocity.set(0, 0);
+		state = Duck.DUCK_STATE_HIT;
+		stateTime = 0;
+	}
+
+	public void dead() {
+		/***/
+	}
+
+	private void stateFalling(float deltaTime) {
+		velocity.add(0, DUCK_GRAVITY);
+		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
+		bounds.x = position.x - DUCK_WIDTH / 2;
+		bounds.y = position.y - DUCK_HEIGHT / 2;
+
+		if (position.y < 2.5f) {
+			state = DUCK_STATE_DEAD;
+			Assets.hitGround.play();
+		}
+
+		frames++;
+		if (frames > 4) {
+			Assets.duckFalling.flip(true, false);
+			texture = Assets.duckFalling;
+			frames = 0;
+		} else
+			texture = Assets.duckFalling;
+
+	}
+
+	private void stateHit() {
+		if (stateTime > 1.0f) {
+			state = DUCK_STATE_FALLING;
+			velocity.set(0, DUCK_GRAVITY);
+			Assets.playSound(Assets.duckFallingSnd);
+		}
+		texture = Assets.duckHit;
+		uiTexture = Assets.uiRedDuck;
 	}
 
 	private void stateFlyAway(float deltaTime) {
