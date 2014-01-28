@@ -14,6 +14,7 @@ public class Dog extends GameObject {
 	public static final int DOG_STATE_HIDDEN = 4;
 	public static final int DOG_STATE_LAUGHING = 5;
 	public static final int DOG_STATE_WALKING_NEW_ROUND = 6;
+	public static final int DOG_STATE_LAUGHING_GAME_OVER = 7;
 	public static final float DOG_WIDTH = 2f;
 	public static final float DOG_HEIGHT = 2f;
 
@@ -41,28 +42,30 @@ public class Dog extends GameObject {
 	public void update(float deltaTime, int ducksHit) {
 
 		switch (state) {
-			case DOG_STATE_WALKING:
-				stateWalking(deltaTime);
-				break;
-			case DOG_STATE_WALKING_NEW_ROUND:
-				stateWalkingNewRound(deltaTime);
-				break;
-			case DOG_STATE_FOUND:
-				stateFound();
-				break;
-			case DOG_STATE_JUMPING:
-				stateJumping(deltaTime);
-				break;
-			case DOG_STATE_FOUND_DUCK:
-				stateFoundDuck(deltaTime, ducksHit);
-				break;
-			case DOG_STATE_LAUGHING:
-				stateLaughing(deltaTime);
-				break;
-			case DOG_STATE_HIDDEN:
-				if (stateHidden(ducksHit))
-					return;
-				break;
+		case DOG_STATE_WALKING:
+			stateWalking(deltaTime);
+			break;
+		case DOG_STATE_WALKING_NEW_ROUND:
+			stateWalkingNewRound(deltaTime);
+			break;
+		case DOG_STATE_FOUND:
+			stateFound();
+			break;
+		case DOG_STATE_JUMPING:
+			stateJumping(deltaTime);
+			break;
+		case DOG_STATE_FOUND_DUCK:
+			stateFoundDuck(deltaTime, ducksHit);
+			break;
+		case DOG_STATE_LAUGHING:
+			stateLaughing(deltaTime);
+			break;
+		case DOG_STATE_LAUGHING_GAME_OVER:
+			stateLaughingGameOver(deltaTime);
+		case DOG_STATE_HIDDEN:
+			if (stateHidden(ducksHit))
+				return;
+			break;
 		}
 
 		stateTime += deltaTime;
@@ -80,9 +83,10 @@ public class Dog extends GameObject {
 	}
 
 	private void stateWalkingNewRound(float deltaTime) {
-		if (position.x >= World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4) {
+		if (position.x >= World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 5.5f) {
 			state = DOG_STATE_FOUND;
 			stateTime = 0;
+			frames = -1;
 			return;
 		}
 
@@ -95,6 +99,7 @@ public class Dog extends GameObject {
 			state = DOG_STATE_JUMPING;
 			dogPositiony = position.y;
 			stateTime = 0;
+			bark = 0;
 		}
 		texture = Assets.dogFound;
 	}
@@ -157,6 +162,13 @@ public class Dog extends GameObject {
 			world.state = World.WORLD_STATE_RUNNING;
 			world.duckCount++;
 		}
+
+		texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
+	}
+
+	private void stateLaughingGameOver(float deltaTime) {
+		if (stateTime < 1)
+			position.add(0, deltaTime * 1);
 
 		texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
 	}

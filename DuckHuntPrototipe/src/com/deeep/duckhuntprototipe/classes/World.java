@@ -1,8 +1,6 @@
 package com.deeep.duckhuntprototipe.classes;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +26,8 @@ public class World {
 	public static final int WORLD_STATE_ROUND_PAUSE = 2;
 	public static final int WORLD_STATE_NEW_ROUND = 3;
 	public static final int WORLD_STATE_ROUND_END = 4;
+	public static final int WORLD_STATE_COUNTING_DUCKS = 5;
+	public static final int WORLD_STATE_GAME_OVER = 6;
 	public static final int GAME_MODE_1 = 0;
 	public static final int GAME_MODE_2 = 1;
 
@@ -70,64 +70,83 @@ public class World {
 
 	public void update(float deltaTime) {
 		switch (state) {
-			case WORLD_STATE_ROUND_START:
+		case WORLD_STATE_ROUND_START:
+			updateDog(deltaTime, ducksHit);
+			checkDogState();
+			break;
+		case WORLD_STATE_NEW_ROUND:
+			updateDog(deltaTime, ducksHit);
+			checkDogState();
+			break;
+		case WORLD_STATE_RUNNING:
+			updateDog(deltaTime, ducksHit);
+			updateDucks(deltaTime);
+			checkCollisions();
+			break;
+		case WORLD_STATE_ROUND_PAUSE:
+			if (checkDucksRoundPause) {
+				checkDucksRoundPause();
+
+				if (ducksHit != 0)
+					dog.position.x = ducks.get(duckCount).position.x;
+				else
+					dog.position.x = World.WORLD_WIDTH / 2
+							- (Dog.DOG_WIDTH / 2);
+			}
+
+			if (stateTime > 2) {
 				updateDog(deltaTime, ducksHit);
 				checkDogState();
-				break;
-			case WORLD_STATE_NEW_ROUND:
-				updateDog(deltaTime, ducksHit);
-				checkDogState();
-				break;
-			case WORLD_STATE_RUNNING:
-				updateDog(deltaTime, ducksHit);
-				updateDucks(deltaTime);
-				checkCollisions();
-				break;
-			case WORLD_STATE_ROUND_PAUSE:
-				if (checkDucksRoundPause) {
-					checkDucksRoundPause();
+			}
 
-					if (ducksHit != 0)
-						dog.position.x = ducks.get(duckCount).position.x;
-					else
-						dog.position.x = World.WORLD_WIDTH / 2
-								- (Dog.DOG_WIDTH / 2);
-				}
+			if (duckCount > 9) {
+				state = WORLD_STATE_ROUND_END;
+				stateTime = 0;
+				duckCount = 0;
+				Assets.endRound.play();
 
-				if (stateTime > 2) {
-					updateDog(deltaTime, ducksHit);
-					checkDogState();
-				}
+				// Collections.sort(ducks, new Comparator<Duck>() {
+				// @Override
+				// public int compare(Duck arg0, Duck arg1) {
+				// return arg0.state.compareTo(arg1.state);
+				// }
+				// });
+			}
+			break;
+		case WORLD_STATE_COUNTING_DUCKS:
+			/***/
+			break;
+		case WORLD_STATE_ROUND_END:
+			presentRoundEnd();
 
-				if (duckCount > 9) {
-					state = WORLD_STATE_ROUND_END;
-					stateTime = 0;
-					duckCount = 0;
-					Assets.endRound.play();
+			if (stateTime > 3)
+				checkDucksHit();
 
-					Collections.sort(ducks, new Comparator<Duck>() {
-						@Override
-						public int compare(Duck arg0, Duck arg1) {
-							return arg0.state.compareTo(arg1.state);
-						}
-					});
-				}
-				break;
-			case WORLD_STATE_ROUND_END:
-				presentRoundEnd();
+			if (stateTime > 5) {
 
-				if (stateTime > 3)
-					checkDucksHit();
+				int count = 0;
+				for (int i = 0; i < ducks.size(); i++)
+					if (ducks.get(i).state == Duck.DUCK_STATE_DEAD)
+						count++;
 
-				if (stateTime > 5) {
+				if (count > 6) {
 					newRound();
 					state = WORLD_STATE_NEW_ROUND;
 					dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
 					dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH
 							/ 4, 1.9f);
+				} else {
+					dog.position.x = World.WORLD_WIDTH / 2
+							- (Dog.DOG_WIDTH / 2);
+					dog.state = Dog.DOG_STATE_LAUGHING_GAME_OVER;
+					state = WORLD_STATE_GAME_OVER;
 				}
+			}
 
-				break;
+			break;
+		case WORLD_STATE_GAME_OVER:
+			updateDog(deltaTime, duckCount);
+			break;
 		}
 		stateTime += deltaTime;
 	}
@@ -161,7 +180,8 @@ public class World {
 		if (gameMode == GAME_MODE_1) {
 			Duck duck = ducks.get(duckCount);
 			if (Gdx.input.justTouched()
-					&& duck.bounds.contains(touchPoint.x, touchPoint.y)) {
+					&& duck.bounds.contains(touchPoint.x, touchPoint.y)
+					&& duck.state == Duck.DUCK_STATE_FLYING) {
 				duck.hit();
 			}
 		} else {

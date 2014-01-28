@@ -32,6 +32,7 @@ public class Duck extends DynamicGameObject {
 	private float lastTimeSaved2;
 	private Random rand;
 	private int frames;
+	private long soundID;
 
 	public Duck(float x, float y) {
 		super(x, y, DUCK_WIDTH, DUCK_HEIGHT);
@@ -41,6 +42,7 @@ public class Duck extends DynamicGameObject {
 		uiStateTime = 0;
 		lastTimeSaved = 0;
 		lastTimeSaved2 = 0;
+		soundID = -1;
 		rand = new Random();
 		uiTexture = Assets.uiWhiteDuck;
 	}
@@ -48,29 +50,29 @@ public class Duck extends DynamicGameObject {
 	public void update(float deltaTime) {
 
 		switch (state) {
-			case DUCK_STATE_STANDBY:
-				uiTexture = Assets.uiWhiteDuck;
-				texture = null;
-				break;
-			case DUCK_STATE_FLYING:
-				stateFlying(deltaTime);
-				uiStateFlying(deltaTime);
-				break;
-			case DUCK_STATE_HIT:
-				stateHit();
-				break;
-			case DUCK_STATE_FALLING:
-				stateFalling(deltaTime);
-				break;
-			case DUCK_STATE_DEAD:
-				// uiTexture = Assets.uiRedDuck;
-				break;
-			case DUCK_STATE_FLY_AWAY:
-				stateFlyAway(deltaTime);
-				break;
-			case DUCK_STATE_GONE:
-				stateGone();
-				break;
+		case DUCK_STATE_STANDBY:
+			uiTexture = Assets.uiWhiteDuck;
+			texture = null;
+			break;
+		case DUCK_STATE_FLYING:
+			stateFlying(deltaTime);
+			uiStateFlying(deltaTime);
+			break;
+		case DUCK_STATE_HIT:
+			stateHit();
+			break;
+		case DUCK_STATE_FALLING:
+			stateFalling(deltaTime);
+			break;
+		case DUCK_STATE_DEAD:
+			// uiTexture = Assets.uiRedDuck;
+			break;
+		case DUCK_STATE_FLY_AWAY:
+			stateFlyAway(deltaTime);
+			break;
+		case DUCK_STATE_GONE:
+			stateGone();
+			break;
 		}
 
 		stateTime += deltaTime;
@@ -166,8 +168,9 @@ public class Duck extends DynamicGameObject {
 		bounds.x = position.x - DUCK_WIDTH / 2;
 		bounds.y = position.y - DUCK_HEIGHT / 2;
 
-		if (position.y < 2.5f) {
+		if (position.y < 2.7f) {
 			state = DUCK_STATE_DEAD;
+			Assets.duckFallingSnd.stop(soundID);
 			Assets.hitGround.play();
 		}
 
@@ -185,7 +188,7 @@ public class Duck extends DynamicGameObject {
 		if (stateTime > 1.0f) {
 			state = DUCK_STATE_FALLING;
 			velocity.set(0, DUCK_GRAVITY);
-			Assets.playSound(Assets.duckFallingSnd);
+			soundID = Assets.duckFallingSnd.play();
 		}
 		texture = Assets.duckHit;
 		uiTexture = Assets.uiRedDuck;
