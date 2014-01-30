@@ -18,6 +18,7 @@ public class GameScreen implements Screen {
 
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
+	static final int GAME_OVER = 2;
 
 	Game game;
 
@@ -62,7 +63,7 @@ public class GameScreen implements Screen {
 		renderer = new WorldRenderer(batcher, world);
 		Assets.startRound.play();
 
-		state = 0;
+		state = GAME_READY;
 		stateTime = 0;
 		shots = 3;
 	}
@@ -72,31 +73,45 @@ public class GameScreen implements Screen {
 			deltaTime = 0.1f;
 
 		switch (state) {
-			case GAME_READY:
-				updateReady(deltaTime);
-				break;
-			case GAME_RUNNING:
-				updateRunning(deltaTime);
-				break;
+		case GAME_READY:
+			updateReady(deltaTime);
+			break;
+		case GAME_RUNNING:
+			updateRunning(deltaTime);
+			break;
+		case GAME_OVER:
+			updateGameOver(deltaTime);
+			break;
 		}
 	}
 
+	private void updateReady(float deltaTime) {
+		if (world.dog.state == Dog.DOG_STATE_HIDDEN)
+			state = GAME_RUNNING;
+
+		world.update(deltaTime);
+	}
+
 	private void updateRunning(float deltaTime) {
-		if (state == GAME_RUNNING) {
-			if (world.state == World.WORLD_STATE_RUNNING) {
-				if (Gdx.input.justTouched()) {
-					if (shots > 0) {
-						guiCam.unproject(touchPoint.set(Gdx.input.getX(),
-								Gdx.input.getY(), 0));
-						Assets.playSound(Assets.shoot);
-						shots--;
-					}
+		switch (world.state) {
+		case World.WORLD_STATE_RUNNING:
+			if (Gdx.input.justTouched()) {
+				if (shots > 0) {
+					guiCam.unproject(touchPoint.set(Gdx.input.getX(),
+							Gdx.input.getY(), 0));
+					Assets.playSound(Assets.shoot);
+					shots--;
 				}
 			}
-		}
-
-		if (world.state == World.WORLD_STATE_ROUND_PAUSE)
+			break;
+		case World.WORLD_STATE_ROUND_PAUSE:
 			shots = 3;
+			break;
+		case World.WORLD_STATE_GAME_OVER:
+			state = GAME_OVER;
+			Assets.gameOver1.play();
+			break;
+		}
 		// ApplicationType appType = Gdx.app.getType();
 
 		/*
@@ -106,11 +121,13 @@ public class GameScreen implements Screen {
 		world.update(deltaTime);
 	}
 
-	private void updateReady(float deltaTime) {
-		if (world.dog.state == Dog.DOG_STATE_HIDDEN)
-			state = GAME_RUNNING;
-
-		world.update(deltaTime);
+	private void updateGameOver(float deltaTime) {
+		if (!Assets.gameOver1.isPlaying())
+			if (!Assets.gameOver2.isPlaying())
+				if (Gdx.input.justTouched()) {
+					state = GAME_READY;
+					world = new World(worldListener, world.gameMode);
+				}
 	}
 
 	public void draw(float deltaTime) {
@@ -124,12 +141,15 @@ public class GameScreen implements Screen {
 		drawUI(deltaTime);
 
 		switch (state) {
-			case GAME_READY:
-				presentReady();
-				break;
-			case GAME_RUNNING:
-				presentRunning();
-				break;
+		case GAME_READY:
+			presentReady();
+			break;
+		case GAME_RUNNING:
+			presentRunning();
+			break;
+		case GAME_OVER:
+			presentGameOver();
+			break;
 		}
 
 		batcher.end();
@@ -137,15 +157,20 @@ public class GameScreen implements Screen {
 
 	private void drawUI(float deltaTime) {
 		TextureRegion texture = null;
-		if (shots == 3)
+		switch (shots) {
+		case 3:
 			texture = Assets.ui3Shots;
-		else if (shots == 2)
+			break;
+		case 2:
 			texture = Assets.ui2Shots;
-		else if (shots == 1)
+			break;
+		case 1:
 			texture = Assets.ui1Shots;
-		else {
+			break;
+		default:
 			texture = Assets.ui0Shots.getKeyFrame(stateTime, true);
 			stateTime += deltaTime;
+			break;
 		}
 
 		batcher.draw(
@@ -191,21 +216,6 @@ public class GameScreen implements Screen {
 		Assets.font.draw(batcher, "R = " + round, 0, 0);
 	}
 
-	private void presentRunning() {
-		if (world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY) {
-			batcher.draw(Assets.presentFlyAway,
-					480 / 2 - Assets.presentFlyAway.getRegionWidth(),
-					320 / 2 + 30, Assets.presentFlyAway.getRegionWidth()
-							+ Assets.presentFlyAway.getRegionWidth(),
-					Assets.presentFlyAway.getRegionHeight()
-							+ Assets.presentFlyAway.getRegionHeight());
-			Assets.font.setScale(0.45f, 0.5f);
-			Assets.font.draw(batcher, "FLY AWAY", 480 / 2
-					- Assets.presentFlyAway.getRegionWidth() / 2 - 15,
-					Gdx.graphics.getHeight() / 2 + 45);
-		}
-	}
-
 	private void presentReady() {
 		batcher.draw(
 				Assets.presentRound,
@@ -221,6 +231,36 @@ public class GameScreen implements Screen {
 				Gdx.graphics.getHeight() / 2 + 64);
 		Assets.font.draw(batcher, round,
 				480 / 2 - Assets.font.getSpaceWidth() + 4,
+				Gdx.graphics.getHeight() / 2 + 45);
+	}
+
+	private void presentRunning() {
+		if (world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY) {
+			batcher.draw(Assets.presentFlyAway,
+					480 / 2 - Assets.presentFlyAway.getRegionWidth(),
+					320 / 2 + 30, Assets.presentFlyAway.getRegionWidth()
+							+ Assets.presentFlyAway.getRegionWidth(),
+					Assets.presentFlyAway.getRegionHeight()
+							+ Assets.presentFlyAway.getRegionHeight());
+			Assets.font.setScale(0.45f, 0.5f);
+			Assets.font.draw(batcher, "FLY AWAY", 480 / 2
+					- Assets.presentFlyAway.getRegionWidth() / 2 - 15,
+					Gdx.graphics.getHeight() / 2 + 45);
+		}
+	}
+
+	private void presentGameOver() {
+		batcher.draw(
+				Assets.presentFlyAway,
+				480 / 2 - Assets.presentFlyAway.getRegionWidth(),
+				320 / 2 + 30,
+				Assets.presentFlyAway.getRegionWidth()
+						+ Assets.presentFlyAway.getRegionWidth(),
+				Assets.presentFlyAway.getRegionHeight()
+						+ Assets.presentFlyAway.getRegionHeight());
+		Assets.font.setScale(0.45f, 0.5f);
+		Assets.font.draw(batcher, "GAME OVER",
+				480 / 2 - Assets.presentFlyAway.getRegionWidth() / 2 - 15,
 				Gdx.graphics.getHeight() / 2 + 45);
 	}
 

@@ -139,13 +139,18 @@ public class World {
 					dog.position.x = World.WORLD_WIDTH / 2
 							- (Dog.DOG_WIDTH / 2);
 					dog.state = Dog.DOG_STATE_LAUGHING_GAME_OVER;
+					dog.stateTime = 0;
 					state = WORLD_STATE_GAME_OVER;
 				}
 			}
 
 			break;
 		case WORLD_STATE_GAME_OVER:
-			updateDog(deltaTime, duckCount);
+			if (!Assets.gameOver1.isPlaying())
+				if (stateTime > 4) {
+					updateDog(deltaTime, duckCount);
+					Assets.gameOver2.play();
+				}
 			break;
 		}
 		stateTime += deltaTime;
@@ -238,7 +243,7 @@ public class World {
 		for (int i = 0; i < ducks.size(); i++) {
 			if (ducks.get(i).state == Duck.DUCK_STATE_DEAD) {
 				ducks.get(i).uiTexture = Assets.uiDucks.getKeyFrame(stateTime,
-						false);
+						true);
 			}
 		}
 	}

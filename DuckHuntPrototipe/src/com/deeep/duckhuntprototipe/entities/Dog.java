@@ -72,7 +72,7 @@ public class Dog extends GameObject {
 	}
 
 	private void stateWalking(float deltaTime) {
-		if (!Assets.startRound.isPlaying()) {
+		if (stateTime > 6) {
 			state = DOG_STATE_FOUND;
 			stateTime = 0;
 			return;

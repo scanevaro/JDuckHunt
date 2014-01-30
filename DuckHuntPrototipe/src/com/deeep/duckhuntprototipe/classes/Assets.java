@@ -46,6 +46,8 @@ public class Assets {
 	public static Music duckHunt;
 	public static Music startRound;
 	public static Music endRound;
+	public static Music gameOver1;
+	public static Music gameOver2;
 
 	public static Sound shoot;
 	public static Sound ducks;
@@ -132,6 +134,10 @@ public class Assets {
 				.internal("data/sounds/start_round.mp3"));
 		endRound = Gdx.audio.newMusic((Gdx.files
 				.internal("data/sounds/end_round.mp3")));
+		gameOver1 = Gdx.audio.newMusic(Gdx.files
+				.internal("data/sounds/gameOver1.mp3"));
+		gameOver2 = Gdx.audio.newMusic(Gdx.files
+				.internal("data/sounds/gameOver2.mp3"));
 
 		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
 		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
