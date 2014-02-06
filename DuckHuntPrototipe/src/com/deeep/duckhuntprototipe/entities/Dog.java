@@ -167,7 +167,7 @@ public class Dog extends GameObject {
 	}
 
 	private void stateLaughingGameOver(float deltaTime) {
-		if (stateTime < 1)
+		if (stateTime > 4)
 			position.add(0, deltaTime * 1);
 
 		texture = Assets.dogLaughing.getKeyFrame(stateTime, true);

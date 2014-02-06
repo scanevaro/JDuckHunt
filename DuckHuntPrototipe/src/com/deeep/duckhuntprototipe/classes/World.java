@@ -27,7 +27,8 @@ public class World {
 	public static final int WORLD_STATE_NEW_ROUND = 3;
 	public static final int WORLD_STATE_ROUND_END = 4;
 	public static final int WORLD_STATE_COUNTING_DUCKS = 5;
-	public static final int WORLD_STATE_GAME_OVER = 6;
+	public static final int WORLD_STATE_GAME_OVER_1 = 6;
+	public static final int WORLD_STATE_GAME_OVER_2 = 7;
 	public static final int GAME_MODE_1 = 0;
 	public static final int GAME_MODE_2 = 1;
 
@@ -39,6 +40,7 @@ public class World {
 	public int state;
 	public int gameMode;
 	public int duckCount;
+	public int duckCountRoundEnd;
 	public int ducksHit;
 	public float stateTime;
 	public boolean checkDucksRoundPause;
@@ -55,6 +57,7 @@ public class World {
 		generateLevel();
 
 		duckCount = 0;
+		duckCountRoundEnd = -1;
 		stateTime = 0;
 		this.state = WORLD_STATE_ROUND_START;
 	}
@@ -94,27 +97,41 @@ public class World {
 							- (Dog.DOG_WIDTH / 2);
 			}
 
-			if (stateTime > 2) {
+			if (stateTime > 1.6f) {
 				updateDog(deltaTime, ducksHit);
 				checkDogState();
 			}
 
 			if (duckCount > 9) {
-				state = WORLD_STATE_ROUND_END;
+				state = WORLD_STATE_COUNTING_DUCKS;
 				stateTime = 0;
 				duckCount = 0;
-				Assets.endRound.play();
-
-				// Collections.sort(ducks, new Comparator<Duck>() {
-				// @Override
-				// public int compare(Duck arg0, Duck arg1) {
-				// return arg0.state.compareTo(arg1.state);
-				// }
-				// });
 			}
 			break;
 		case WORLD_STATE_COUNTING_DUCKS:
-			/***/
+			if (stateTime > 1) {
+				for (duckCountRoundEnd = duckCountRoundEnd + 1; duckCountRoundEnd < ducks
+						.size(); duckCountRoundEnd++) {
+					if (ducks.get(duckCountRoundEnd).state == Duck.DUCK_STATE_GONE) {
+						Duck duck = ducks.get(duckCountRoundEnd);
+						for (int x = ducks.size() - 1; 0 < x; x--) {
+							if (ducks.get(x).state == Duck.DUCK_STATE_DEAD) {
+								ducks.remove(duckCountRoundEnd);
+								ducks.add(duck);
+								Assets.movingDucksArray.play();
+								stateTime = 0;
+								return;
+							}
+						}
+					}
+				}
+			}
+
+			if (duckCountRoundEnd >= ducks.size())
+				if (ducksHit >= 6)
+					state = WORLD_STATE_ROUND_END;
+				else
+					state = WORLD_STATE_GAME_OVER_1;
 			break;
 		case WORLD_STATE_ROUND_END:
 			presentRoundEnd();
@@ -140,19 +157,20 @@ public class World {
 							- (Dog.DOG_WIDTH / 2);
 					dog.state = Dog.DOG_STATE_LAUGHING_GAME_OVER;
 					dog.stateTime = 0;
-					state = WORLD_STATE_GAME_OVER;
+					state = WORLD_STATE_GAME_OVER_1;
 				}
 			}
 
 			break;
-		case WORLD_STATE_GAME_OVER:
-			if (!Assets.gameOver1.isPlaying())
-				if (stateTime > 4) {
-					updateDog(deltaTime, duckCount);
-					Assets.gameOver2.play();
-				}
+		case WORLD_STATE_GAME_OVER_1:
+			if (stateTime > 4)
+				state = WORLD_STATE_GAME_OVER_2;
+			break;
+		case WORLD_STATE_GAME_OVER_2:
+			updateDog(deltaTime, duckCount);
 			break;
 		}
+
 		stateTime += deltaTime;
 	}
 

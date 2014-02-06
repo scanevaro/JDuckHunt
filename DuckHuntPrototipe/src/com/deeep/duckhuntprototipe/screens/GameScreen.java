@@ -18,7 +18,8 @@ public class GameScreen implements Screen {
 
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
-	static final int GAME_OVER = 2;
+	static final int GAME_OVER_1 = 2;
+	static final int GAME_OVER_2 = 3;
 
 	Game game;
 
@@ -32,6 +33,7 @@ public class GameScreen implements Screen {
 	WorldRenderer renderer;
 	String round;
 	public static int shots;
+	private int x;
 
 	public GameScreen(Game game, int gameMode) {
 		this.game = game;
@@ -79,17 +81,21 @@ public class GameScreen implements Screen {
 		case GAME_RUNNING:
 			updateRunning(deltaTime);
 			break;
-		case GAME_OVER:
-			updateGameOver(deltaTime);
+		case GAME_OVER_1:
+			updateGameOver1(deltaTime);
+			break;
+		case GAME_OVER_2:
+			updateGameOver2(deltaTime);
 			break;
 		}
+
+		world.update(deltaTime);
 	}
 
 	private void updateReady(float deltaTime) {
 		if (world.dog.state == Dog.DOG_STATE_HIDDEN)
 			state = GAME_RUNNING;
 
-		world.update(deltaTime);
 	}
 
 	private void updateRunning(float deltaTime) {
@@ -107,8 +113,8 @@ public class GameScreen implements Screen {
 		case World.WORLD_STATE_ROUND_PAUSE:
 			shots = 3;
 			break;
-		case World.WORLD_STATE_GAME_OVER:
-			state = GAME_OVER;
+		case World.WORLD_STATE_GAME_OVER_1:
+			state = GAME_OVER_1;
 			Assets.gameOver1.play();
 			break;
 		}
@@ -117,17 +123,22 @@ public class GameScreen implements Screen {
 		/*
 		 * Input code
 		 */
-
-		world.update(deltaTime);
 	}
 
-	private void updateGameOver(float deltaTime) {
-		if (!Assets.gameOver1.isPlaying())
-			if (!Assets.gameOver2.isPlaying())
-				if (Gdx.input.justTouched()) {
-					state = GAME_READY;
-					world = new World(worldListener, world.gameMode);
-				}
+	private void updateGameOver1(float deltaTime) {
+		if (stateTime > 4) {
+			state = GAME_OVER_2;
+			Assets.gameOver2.play();
+		}
+	}
+
+	private void updateGameOver2(float deltaTime) {
+		if (Gdx.input.justTouched()) {
+			state = GAME_READY;
+			round = "1";
+			world = new World(worldListener, world.gameMode);
+			renderer = new WorldRenderer(batcher, world);
+		}
 	}
 
 	public void draw(float deltaTime) {
@@ -147,7 +158,10 @@ public class GameScreen implements Screen {
 		case GAME_RUNNING:
 			presentRunning();
 			break;
-		case GAME_OVER:
+		case GAME_OVER_1:
+			presentGameOver();
+			break;
+		case GAME_OVER_2:
 			presentGameOver();
 			break;
 		}
@@ -169,7 +183,6 @@ public class GameScreen implements Screen {
 			break;
 		default:
 			texture = Assets.ui0Shots.getKeyFrame(stateTime, true);
-			stateTime += deltaTime;
 			break;
 		}
 
@@ -190,7 +203,7 @@ public class GameScreen implements Screen {
 				Assets.uiDucksRound.getRegionHeight()
 						+ Assets.uiDucksRound.getRegionHeight() / 2);
 
-		int x = 0;
+		x = 0;
 		for (int i = 0; i < world.ducks.size(); i++) {
 			TextureRegion uiDuck = world.ducks.get(i).uiTexture;
 			if (uiDuck != null) {
@@ -268,6 +281,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		update(delta);
 		draw(delta);
+
+		stateTime += delta;
 	}
 
 	@Override

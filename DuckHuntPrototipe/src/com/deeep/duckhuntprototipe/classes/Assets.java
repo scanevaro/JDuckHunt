@@ -58,6 +58,7 @@ public class Assets {
 	public static Sound hitGround;
 	public static Sound duckFallingSnd;
 	public static Sound cuak;
+	public static Sound movingDucksArray;
 
 	public static void load() {
 		loadAtlas();
@@ -153,6 +154,8 @@ public class Assets {
 		duckFallingSnd = Gdx.audio.newSound(Gdx.files
 				.internal("data/sounds/duck_falling.mp3"));
 		cuak = Gdx.audio.newSound(Gdx.files.internal("data/sounds/cuak.mp3"));
+		movingDucksArray = Gdx.audio.newSound(Gdx.files
+				.internal("data/sounds/movingDucksArray.mp3"));
 	}
 
 	public static void playSound(Sound sound) {
