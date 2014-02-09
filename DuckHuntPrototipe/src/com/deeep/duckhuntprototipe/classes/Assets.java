@@ -33,12 +33,12 @@ public class Assets {
 	public static TextureRegion dogDuckFound;
 	public static TextureRegion dogDucksFound;
 	public static TextureRegion presentFlyAway;
+	public static TextureRegion ui0Shots;
 
 	public static Animation duckFly;
 	public static Animation dogWalking;
 	public static Animation dogJumping;
 	public static Animation dogLaughing;
-	public static Animation ui0Shots;
 	public static Animation uiDucks;
 
 	public static BitmapFont font;
@@ -91,13 +91,11 @@ public class Assets {
 		duckFly = new Animation(0.2f,
 				((TextureRegion) items.findRegion("duckFlyRight1")),
 				((TextureRegion) items.findRegion("duckFlyRight2")));
-		ui0Shots = new Animation(0.4f,
-				((TextureRegion) items.findRegion("ui0Shots1")),
-				((TextureRegion) items.findRegion("ui0Shots2")));
 		uiDucks = new Animation(0.2f,
 				((TextureRegion) items.findRegion("uiWhiteDuck")),
 				((TextureRegion) items.findRegion("uiRedDuck")));
 
+		ui0Shots = items.findRegion("ui0Shots1");
 		duckHit = items.findRegion("duckHit");
 		duckFalling = items.findRegion("duckFalling");
 		title = items.findRegion("title");

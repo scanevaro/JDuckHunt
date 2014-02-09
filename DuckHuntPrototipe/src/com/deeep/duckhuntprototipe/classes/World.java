@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.entities.Dog;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
+@SuppressWarnings("all")
 public class World {
 
 	public interface WorldListener {
@@ -53,125 +54,158 @@ public class World {
 		this.gameMode = gameMode;
 		rand = new Random();
 		this.touchPoint = new Vector3();
-		dog = new Dog(0, 1.9f, this);
-		generateLevel();
 
-		duckCount = 0;
-		duckCountRoundEnd = -1;
-		stateTime = 0;
-		this.state = WORLD_STATE_ROUND_START;
+		dog = new Dog(0, 1.9f, this);
+		generateRound();
+
 	}
 
-	private void generateLevel() {
+	private void generateRound() {
 		ducks.clear();
+
 		for (int i = 0; i < 10; i++) {
 			float random = rand.nextFloat() > 0.5f ? 6.5f : 8.5f;
 			Duck duck = new Duck(random, 2f);
 			ducks.add(duck);
 		}
+
+		duckCount = 0;
+		duckCountRoundEnd = 0;
+		stateTime = 0;
+		this.state = WORLD_STATE_ROUND_START;
 	}
 
 	public void update(float deltaTime) {
 		switch (state) {
 		case WORLD_STATE_ROUND_START:
-			updateDog(deltaTime, ducksHit);
-			checkDogState();
+			stateRoundStart(deltaTime);
 			break;
 		case WORLD_STATE_NEW_ROUND:
-			updateDog(deltaTime, ducksHit);
-			checkDogState();
+			stateNewRound(deltaTime);
 			break;
 		case WORLD_STATE_RUNNING:
-			updateDog(deltaTime, ducksHit);
-			updateDucks(deltaTime);
-			checkCollisions();
+			stateRunning(deltaTime);
 			break;
 		case WORLD_STATE_ROUND_PAUSE:
-			if (checkDucksRoundPause) {
-				checkDucksRoundPause();
-
-				if (ducksHit != 0)
-					dog.position.x = ducks.get(duckCount).position.x;
-				else
-					dog.position.x = World.WORLD_WIDTH / 2
-							- (Dog.DOG_WIDTH / 2);
-			}
-
-			if (stateTime > 1.6f) {
-				updateDog(deltaTime, ducksHit);
-				checkDogState();
-			}
-
-			if (duckCount > 9) {
-				state = WORLD_STATE_COUNTING_DUCKS;
-				stateTime = 0;
-				duckCount = 0;
-			}
-			break;
-		case WORLD_STATE_COUNTING_DUCKS:
-			if (stateTime > 1) {
-				for (duckCountRoundEnd = duckCountRoundEnd + 1; duckCountRoundEnd < ducks
-						.size(); duckCountRoundEnd++) {
-					if (ducks.get(duckCountRoundEnd).state == Duck.DUCK_STATE_GONE) {
-						Duck duck = ducks.get(duckCountRoundEnd);
-						for (int x = ducks.size() - 1; 0 < x; x--) {
-							if (ducks.get(x).state == Duck.DUCK_STATE_DEAD) {
-								ducks.remove(duckCountRoundEnd);
-								ducks.add(duck);
-								Assets.movingDucksArray.play();
-								stateTime = 0;
-								return;
-							}
-						}
-					}
-				}
-			}
-
-			if (duckCountRoundEnd >= ducks.size())
-				if (ducksHit >= 6)
-					state = WORLD_STATE_ROUND_END;
-				else
-					state = WORLD_STATE_GAME_OVER_1;
+			stateRoundPause(deltaTime);
 			break;
 		case WORLD_STATE_ROUND_END:
-			presentRoundEnd();
-
-			if (stateTime > 3)
-				checkDucksHit();
-
-			if (stateTime > 5) {
-
-				int count = 0;
-				for (int i = 0; i < ducks.size(); i++)
-					if (ducks.get(i).state == Duck.DUCK_STATE_DEAD)
-						count++;
-
-				if (count > 6) {
-					newRound();
-					state = WORLD_STATE_NEW_ROUND;
-					dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
-					dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH
-							/ 4, 1.9f);
-				} else {
-					dog.position.x = World.WORLD_WIDTH / 2
-							- (Dog.DOG_WIDTH / 2);
-					dog.state = Dog.DOG_STATE_LAUGHING_GAME_OVER;
-					dog.stateTime = 0;
-					state = WORLD_STATE_GAME_OVER_1;
-				}
-			}
-
+			stateRoundEnd();
+			break;
+		case WORLD_STATE_COUNTING_DUCKS:
+			stateCountingDucks(deltaTime);
 			break;
 		case WORLD_STATE_GAME_OVER_1:
-			if (stateTime > 4)
-				state = WORLD_STATE_GAME_OVER_2;
+			stateGameOver1();
 			break;
 		case WORLD_STATE_GAME_OVER_2:
-			updateDog(deltaTime, duckCount);
+			stateGameOver2(deltaTime);
 			break;
 		}
 
 		stateTime += deltaTime;
+	}
+
+	private void stateRoundStart(float deltaTime) {
+		updateDog(deltaTime, ducksHit);
+		checkDogState();
+	}
+
+	private void stateNewRound(float deltaTime) {
+		updateDog(deltaTime, ducksHit);
+		checkDogState();
+	}
+
+	private void stateRunning(float deltaTime) {
+		updateDog(deltaTime, ducksHit);
+		updateDucks(deltaTime);
+		checkCollisions();
+	}
+
+	private void stateRoundPause(float deltaTime) {
+		if (checkDucksRoundPause) {
+			checkDucksRoundPause();
+
+			if (ducksHit != 0)
+				dog.position.x = ducks.get(duckCount).position.x;
+			else
+				dog.position.x = World.WORLD_WIDTH / 2 - (Dog.DOG_WIDTH / 2);
+		}
+
+		if (stateTime > 1.6f) {
+			updateDog(deltaTime, ducksHit);
+			checkDogState();
+		}
+
+		if (duckCount > 9) {
+			state = WORLD_STATE_COUNTING_DUCKS;
+			stateTime = 0;
+			duckCount = 0;
+		}
+
+	}
+
+	private void stateRoundEnd() {
+		presentRoundEnd();
+
+		if (stateTime > 5) {
+			newRound();
+			state = WORLD_STATE_NEW_ROUND;
+			dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
+			dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4,
+					1.9f);
+		}
+	}
+
+	private void stateCountingDucks(float deltaTime) {
+		if (stateTime > 0.4f) {
+			for (duckCountRoundEnd = duckCountRoundEnd; duckCountRoundEnd < ducks
+					.size(); duckCountRoundEnd++) {
+				if (ducks.get(duckCountRoundEnd).state == Duck.DUCK_STATE_GONE) {
+					Duck duck = ducks.get(duckCountRoundEnd);
+					for (int x = duckCountRoundEnd; x < ducks.size(); x++) {
+						if (ducks.get(x).state == Duck.DUCK_STATE_DEAD) {
+							ducks.remove(duckCountRoundEnd);
+							ducks.add(duck);
+							Assets.movingDucksArray.play();
+							stateTime = 0;
+							return;
+						}
+					}
+					duckCountRoundEnd = ducks.size();
+				}
+			}
+		}
+
+		if (duckCountRoundEnd >= ducks.size()) {
+			int ducksDead = 0;
+			for (int i = 0; i < ducks.size(); i++) {
+				if (ducks.get(i).state == Duck.DUCK_STATE_DEAD)
+					ducksDead++;
+			}
+
+			stateTime = 0;
+
+			if (ducksDead >= 6) {
+				state = WORLD_STATE_ROUND_END;
+				Assets.endRound.play();
+			} else {
+				state = WORLD_STATE_GAME_OVER_1;
+			}
+		}
+	}
+
+	private void stateGameOver1() {
+		if (stateTime > 3) {
+			state = WORLD_STATE_GAME_OVER_2;
+			dog.position.x = World.WORLD_WIDTH / 2 - (Dog.DOG_WIDTH / 2);
+			dog.position.y = 1.7f;
+			dog.state = Dog.DOG_STATE_LAUGHING_GAME_OVER;
+		}
+	}
+
+	private void stateGameOver2(float deltaTime) {
+		updateDog(deltaTime, duckCount);
 	}
 
 	private void updateDog(float deltaTime, int duckCount) {
@@ -266,12 +300,8 @@ public class World {
 		}
 	}
 
-	private void checkDucksHit() {
-
-	}
-
 	private void newRound() {
-		generateLevel();
+		generateRound();
 		// round++;
 	}
 }

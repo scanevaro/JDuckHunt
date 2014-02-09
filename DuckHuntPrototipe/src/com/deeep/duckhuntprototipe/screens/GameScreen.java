@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
 	Game game;
 
 	int state;
-	int stateTime;
+	float stateTime;
 	OrthographicCamera guiCam;
 	Vector3 touchPoint;
 	SpriteBatch batcher;
@@ -78,11 +78,15 @@ public class GameScreen implements Screen {
 		case GAME_READY:
 			updateReady(deltaTime);
 			break;
+		// case ROUND_START
+		// case COUNT_DUCKS
+		// case NEXT_ROUND
+		// case GAME_OVER
 		case GAME_RUNNING:
 			updateRunning(deltaTime);
 			break;
 		case GAME_OVER_1:
-			updateGameOver1(deltaTime);
+			updateGameOver1();
 			break;
 		case GAME_OVER_2:
 			updateGameOver2(deltaTime);
@@ -114,6 +118,7 @@ public class GameScreen implements Screen {
 			shots = 3;
 			break;
 		case World.WORLD_STATE_GAME_OVER_1:
+			stateTime = 0;
 			state = GAME_OVER_1;
 			Assets.gameOver1.play();
 			break;
@@ -125,8 +130,8 @@ public class GameScreen implements Screen {
 		 */
 	}
 
-	private void updateGameOver1(float deltaTime) {
-		if (stateTime > 4) {
+	private void updateGameOver1() {
+		if (stateTime > 3) {
 			state = GAME_OVER_2;
 			Assets.gameOver2.play();
 		}
@@ -138,6 +143,7 @@ public class GameScreen implements Screen {
 			round = "1";
 			world = new World(worldListener, world.gameMode);
 			renderer = new WorldRenderer(batcher, world);
+			Assets.startRound.play();
 		}
 	}
 
@@ -155,12 +161,14 @@ public class GameScreen implements Screen {
 		case GAME_READY:
 			presentReady();
 			break;
+		// case ROUND_START
+		// case COUNT_DUCKS
+		// case NEXT_ROUND
+		// case GAME_OVER
 		case GAME_RUNNING:
 			presentRunning();
 			break;
 		case GAME_OVER_1:
-			presentGameOver();
-			break;
 		case GAME_OVER_2:
 			presentGameOver();
 			break;
@@ -182,7 +190,7 @@ public class GameScreen implements Screen {
 			texture = Assets.ui1Shots;
 			break;
 		default:
-			texture = Assets.ui0Shots.getKeyFrame(stateTime, true);
+			texture = Assets.ui0Shots;
 			break;
 		}
 

@@ -62,6 +62,7 @@ public class Dog extends GameObject {
 			break;
 		case DOG_STATE_LAUGHING_GAME_OVER:
 			stateLaughingGameOver(deltaTime);
+			break;
 		case DOG_STATE_HIDDEN:
 			if (stateHidden(ducksHit))
 				return;
@@ -167,7 +168,7 @@ public class Dog extends GameObject {
 	}
 
 	private void stateLaughingGameOver(float deltaTime) {
-		if (stateTime > 4)
+		if (position.y <= 3.25f)
 			position.add(0, deltaTime * 1);
 
 		texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
