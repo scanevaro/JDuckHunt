@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -78,8 +77,8 @@ public class MainMenuScreen implements Screen {
 	}
 
 	public void draw(float deltaTime) {
-		GLCommon gl = Gdx.gl;
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		guiCam.update();
 		batcher.setProjectionMatrix(guiCam.combined);
