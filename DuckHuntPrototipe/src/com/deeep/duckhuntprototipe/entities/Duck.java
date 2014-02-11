@@ -37,7 +37,7 @@ public class Duck extends DynamicGameObject {
 	public Duck(float x, float y) {
 		super(x, y, DUCK_WIDTH, DUCK_HEIGHT);
 		state = DUCK_STATE_FLYING;
-		velocity.set(DUCK_VELOCITY, DUCK_VELOCITY);
+		velocity.set(1/* DUCK_VELOCITY */, 1 /* DUCK_VELOCITY */);
 		stateTime = 0;
 		uiStateTime = 0;
 		lastTimeSaved = 0;
@@ -80,8 +80,8 @@ public class Duck extends DynamicGameObject {
 
 	private void stateFlying(float deltaTime) {
 		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
-		bounds.x = position.x - DUCK_WIDTH / 2;
-		bounds.y = position.y - DUCK_HEIGHT / 2;
+		bounds.x = position.x - bounds.width / 2;
+		bounds.y = position.y - bounds.height / 2;
 
 		if (GameScreen.shots == 0) {
 			state = DUCK_STATE_FLY_AWAY;

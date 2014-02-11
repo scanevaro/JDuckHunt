@@ -69,6 +69,8 @@ public class World {
 			ducks.add(duck);
 		}
 
+		// ducks.add(new Duck(5, 3.5f));
+
 		duckCount = 0;
 		duckCountRoundEnd = 0;
 		stateTime = 0;
@@ -158,7 +160,7 @@ public class World {
 	}
 
 	private void stateCountingDucks(float deltaTime) {
-		if (stateTime > 0.4f) {
+		if (stateTime > 0.325f) {
 			for (duckCountRoundEnd = duckCountRoundEnd; duckCountRoundEnd < ducks
 					.size(); duckCountRoundEnd++) {
 				if (ducks.get(duckCountRoundEnd).state == Duck.DUCK_STATE_GONE) {

@@ -89,7 +89,12 @@ public class WorldRenderer {
 
 			float side = duck.velocity.x < 0 ? -1 : 1;
 			if (texture != null)
-				batch.draw(texture, x, y, side * width, height);
+				if (side < 0)
+					batch.draw(texture, x + 0.5f, y - 0.5f, side * width,
+							height);
+				else
+					batch.draw(texture, x - 0.5f, y - 0.5f, side * width,
+							height);
 		}
 	}
 }
