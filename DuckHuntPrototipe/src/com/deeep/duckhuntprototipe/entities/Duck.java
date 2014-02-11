@@ -37,7 +37,7 @@ public class Duck extends DynamicGameObject {
 	public Duck(float x, float y) {
 		super(x, y, DUCK_WIDTH, DUCK_HEIGHT);
 		state = DUCK_STATE_FLYING;
-		velocity.set(1/* DUCK_VELOCITY */, 1 /* DUCK_VELOCITY */);
+		velocity.set(DUCK_VELOCITY, DUCK_VELOCITY);
 		stateTime = 0;
 		uiStateTime = 0;
 		lastTimeSaved = 0;
