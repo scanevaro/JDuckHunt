@@ -138,14 +138,8 @@ public class GameScreen implements Screen {
 	}
 
 	private void updateGameOver2(float deltaTime) {
-		if (Gdx.input.justTouched()) {
-			// state = GAME_READY;
-			// round = "1";
-			// world = new World(worldListener, world.gameMode);
-			// renderer = new WorldRenderer(batcher, world);
-			// Assets.startRound.play();
+		if (Gdx.input.justTouched())
 			game.setScreen(new MainMenuScreen(game));
-		}
 	}
 
 	public void draw(float deltaTime) {
