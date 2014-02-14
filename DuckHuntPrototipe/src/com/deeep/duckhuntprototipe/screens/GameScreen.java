@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.classes.Assets;
+import com.deeep.duckhuntprototipe.classes.Settings;
 import com.deeep.duckhuntprototipe.classes.World;
 import com.deeep.duckhuntprototipe.classes.World.WorldListener;
 import com.deeep.duckhuntprototipe.classes.WorldRenderer;
@@ -34,6 +35,8 @@ public class GameScreen implements Screen {
 	String round;
 	public static int shots;
 	private int x;
+	int lastScore;
+	String scoreString;
 
 	public GameScreen(Game game, int gameMode) {
 		this.game = game;
@@ -68,6 +71,8 @@ public class GameScreen implements Screen {
 		state = GAME_READY;
 		stateTime = 0;
 		shots = 3;
+		lastScore = 0;
+		scoreString = "000000";
 	}
 
 	public void update(float deltaTime) {
@@ -109,7 +114,7 @@ public class GameScreen implements Screen {
 				if (shots > 0) {
 					guiCam.unproject(touchPoint.set(Gdx.input.getX(),
 							Gdx.input.getY(), 0));
-					Assets.playSound(Assets.shoot);
+					Assets.shoot.play();
 					shots--;
 				}
 			}
@@ -128,18 +133,38 @@ public class GameScreen implements Screen {
 		/*
 		 * Input code
 		 */
+		updateScore();
+	}
+
+	private void updateScore() {
+		if (world.score != lastScore) {
+			lastScore = world.score;
+			
+			if (String.valueOf(lastScore).length() == 3)
+				scoreString = "000" + String.valueOf(lastScore);
+			else if (String.valueOf(lastScore).length() == 4)
+				scoreString = "00" + String.valueOf(lastScore);
+			else if (String.valueOf(lastScore).length() == 5)
+				scoreString = "0" + String.valueOf(lastScore);
+			else
+				scoreString = String.valueOf(lastScore);
+		}
 	}
 
 	private void updateGameOver1() {
 		if (stateTime > 3) {
 			state = GAME_OVER_2;
 			Assets.gameOver2.play();
+
+			Settings.addScore(lastScore);
+			Settings.save();
 		}
 	}
 
 	private void updateGameOver2(float deltaTime) {
 		if (Gdx.input.justTouched())
 			game.setScreen(new MainMenuScreen(game));
+
 	}
 
 	public void draw(float deltaTime) {
@@ -229,6 +254,11 @@ public class GameScreen implements Screen {
 						+ Assets.uiScore.getRegionWidth() / 2,
 				Assets.uiScore.getRegionHeight()
 						+ Assets.uiScore.getRegionHeight() / 2);
+
+		Assets.font.setScale(0.59f, 0.59f);
+		Assets.font.draw(batcher, scoreString, 480 - 95, 48);
+
+		// no funciona
 		Assets.font.draw(batcher, "R = " + round, 0, 0);
 	}
 

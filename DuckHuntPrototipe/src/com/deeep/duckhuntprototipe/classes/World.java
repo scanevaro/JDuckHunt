@@ -38,6 +38,7 @@ public class World {
 	public final Dog dog;
 	public final Random rand;
 
+	public int score;
 	public int state;
 	public int gameMode;
 	public int duckCount;
@@ -56,8 +57,8 @@ public class World {
 		this.touchPoint = new Vector3();
 
 		dog = new Dog(0, 1.9f, this);
+		this.score = 0;
 		generateRound();
-
 	}
 
 	private void generateRound() {
@@ -242,18 +243,24 @@ public class World {
 					&& duck.bounds.contains(touchPoint.x, touchPoint.y)
 					&& duck.state == Duck.DUCK_STATE_FLYING) {
 				duck.hit();
+
+				score += Duck.SCORE;
 			}
 		} else {
 			Duck duck = ducks.get(duckCount);
 			if (Gdx.input.justTouched()
 					&& duck.bounds.contains(touchPoint.x, touchPoint.y)) {
 				duck.hit();
+
+				score += Duck.SCORE;
 			}
 
 			Duck duck2 = ducks.get(duckCount + 1);
 			if (Gdx.input.justTouched()
 					&& duck2.bounds.contains(touchPoint.x, touchPoint.y)) {
 				duck2.hit();
+
+				score += Duck.SCORE;
 			}
 		}
 	}
