@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.DynamicGameObject;
 import com.deeep.duckhuntprototipe.classes.World;
-import com.deeep.duckhuntprototipe.screens.GameScreen;
 
 public class Duck extends DynamicGameObject {
 
@@ -59,7 +58,7 @@ public class Duck extends DynamicGameObject {
 		case DUCK_STATE_FLYING:
 			stateFlying(deltaTime);
 			uiStateFlying(deltaTime);
-			checkShots();
+			checkStateTime();
 			break;
 		case DUCK_STATE_HIT:
 			stateHit();
@@ -171,11 +170,8 @@ public class Duck extends DynamicGameObject {
 		uiStateTime += deltaTime;
 	}
 
-	private void checkShots() {
-		if (GameScreen.shots == 0) {
-			state = DUCK_STATE_FLY_AWAY;
-			return;
-		} else if (stateTime > 8f) {
+	private void checkStateTime() {
+		if (stateTime > 8f) {
 			state = DUCK_STATE_FLY_AWAY;
 			stateTime = 0;
 			return;
@@ -227,10 +223,11 @@ public class Duck extends DynamicGameObject {
 	private void stateFlyAway(float deltaTime) {
 		position.add(0, deltaTime * 5);
 
-		frames++;
-		if (frames > 7) {
-			Assets.miss.play();
-			frames = 0;
+		if (stateTime > 0.125f) {
+			if ((stateTime - lastTimeSaved) >= 0.125f) {
+				Assets.miss.play();
+				lastTimeSaved = stateTime;
+			}
 		}
 
 		if (position.y > World.WORLD_HEIGHT + DUCK_HEIGHT) {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.classes.Assets;
+import com.deeep.duckhuntprototipe.classes.Settings;
 import com.deeep.duckhuntprototipe.classes.World;
 
 public class MainMenuScreen implements Screen {
@@ -23,8 +24,6 @@ public class MainMenuScreen implements Screen {
 	Vector3 touchPoint;
 	SpriteBatch batcher;
 	int menuCursor;
-
-	boolean play;
 
 	public MainMenuScreen(Game game) {
 		this.game = game;
@@ -41,8 +40,9 @@ public class MainMenuScreen implements Screen {
 				Assets.gameMode2.getRegionHeight() * 2);
 		touchPoint = new Vector3();
 		batcher = new SpriteBatch();
-		play = true;
 		menuCursor = 100;
+
+		Assets.duckHunt.play();
 	}
 
 	public void update(float deltaTime) {
@@ -62,17 +62,17 @@ public class MainMenuScreen implements Screen {
 				return;
 			}
 
-			if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
-				if (menuCursor == 70) {
-					game.setScreen(new GameScreen(game, World.GAME_MODE_2));
-					if (Assets.duckHunt.isPlaying())
-						Assets.duckHunt.stop();
-				} else {
-					menuCursor = 70;
-					Assets.playSound(Assets.shoot);
-				}
-				return;
-			}
+			// if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
+			// if (menuCursor == 70) {
+			// game.setScreen(new GameScreen(game, World.GAME_MODE_2));
+			// if (Assets.duckHunt.isPlaying())
+			// Assets.duckHunt.stop();
+			// } else {
+			// menuCursor = 70;
+			// Assets.playSound(Assets.shoot);
+			// }
+			// return;
+			// }
 		}
 	}
 
@@ -84,7 +84,6 @@ public class MainMenuScreen implements Screen {
 		batcher.setProjectionMatrix(guiCam.combined);
 
 		presentMenu();
-		presentIntroTheme();
 	}
 
 	private void presentMenu() {
@@ -107,14 +106,14 @@ public class MainMenuScreen implements Screen {
 				menuCursor, Assets.menuCursor.getRegionWidth() * 2,
 				Assets.menuCursor.getRegionHeight() * 2);
 
-		batcher.end();
-	}
+		Assets.font.setScale(0.5f, 0.5f);
+		Assets.font.draw(batcher, "High Score ",
+				480 / 2 - Assets.gameMode2.getRegionWidth() / 2 - 40,
+				menuCursor - 60);
+		Assets.font.draw(batcher, String.valueOf(Settings.highscore), 480 / 2
+				- Assets.gameMode2.getRegionWidth() / 2 + 100, menuCursor - 60);
 
-	private void presentIntroTheme() {
-		if (play) {
-			Assets.duckHunt.play();
-			play = false;
-		}
+		batcher.end();
 	}
 
 	@Override

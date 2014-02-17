@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.duckhuntprototipe.entities.Dog;
 import com.deeep.duckhuntprototipe.entities.Duck;
+import com.deeep.duckhuntprototipe.screens.GameScreen;
 
 @SuppressWarnings("all")
 public class World {
@@ -30,8 +31,10 @@ public class World {
 	public static final int WORLD_STATE_COUNTING_DUCKS = 5;
 	public static final int WORLD_STATE_GAME_OVER_1 = 6;
 	public static final int WORLD_STATE_GAME_OVER_2 = 7;
+	public static final int WORLD_STATE_PERFECT_ROUND = 8;
 	public static final int GAME_MODE_1 = 0;
 	public static final int GAME_MODE_2 = 1;
+	private final int PERFECT = 10000;
 
 	public final List<Duck> ducks;
 	public final WorldListener listener;
@@ -46,6 +49,7 @@ public class World {
 	public int ducksHit;
 	public float stateTime;
 	public boolean checkDucksRoundPause;
+	public boolean perfect;
 
 	Vector3 touchPoint;
 
@@ -75,6 +79,7 @@ public class World {
 		duckCount = 0;
 		duckCountRoundEnd = 0;
 		stateTime = 0;
+		perfect = true;
 		this.state = WORLD_STATE_ROUND_START;
 	}
 
@@ -94,6 +99,9 @@ public class World {
 			break;
 		case WORLD_STATE_ROUND_END:
 			stateRoundEnd();
+			break;
+		case WORLD_STATE_PERFECT_ROUND:
+			statePerfectRound();
 			break;
 		case WORLD_STATE_COUNTING_DUCKS:
 			stateCountingDucks(deltaTime);
@@ -149,14 +157,28 @@ public class World {
 	}
 
 	private void stateRoundEnd() {
-		presentRoundEnd();
-
 		if (stateTime > 5) {
 			newRound();
 			state = WORLD_STATE_NEW_ROUND;
 			dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
 			dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4,
 					1.9f);
+		}
+	}
+
+	private void statePerfectRound() {
+		if (stateTime > 9) {
+			newRound();
+			state = WORLD_STATE_NEW_ROUND;
+			dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
+			dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4,
+					1.9f);
+		} else if (stateTime > 5) {
+			if (perfect) {
+				Assets.perfect.play();
+				score += PERFECT;
+				perfect = false;
+			}
 		}
 	}
 
@@ -189,12 +211,16 @@ public class World {
 
 			stateTime = 0;
 
-			if (ducksDead >= 6) {
+			if (ducksDead == 10) {
+				state = WORLD_STATE_PERFECT_ROUND;
+				Assets.endRound.play();
+			} else if (ducksDead >= 6) {
 				state = WORLD_STATE_ROUND_END;
 				Assets.endRound.play();
 			} else {
 				state = WORLD_STATE_GAME_OVER_1;
 			}
+
 		}
 	}
 
@@ -245,6 +271,9 @@ public class World {
 				duck.hit();
 
 				score += Duck.SCORE;
+			} else if (Gdx.input.justTouched() && GameScreen.shots == 0
+					&& duck.state == Duck.DUCK_STATE_FLYING) {
+				duck.state = Duck.DUCK_STATE_FLY_AWAY;
 			}
 		} else {
 			Duck duck = ducks.get(duckCount);
@@ -298,15 +327,6 @@ public class World {
 		}
 
 		stateTime = 0;
-	}
-
-	private void presentRoundEnd() {
-		for (int i = 0; i < ducks.size(); i++) {
-			if (ducks.get(i).state == Duck.DUCK_STATE_DEAD) {
-				ducks.get(i).uiTexture = Assets.uiDucks.getKeyFrame(stateTime,
-						true);
-			}
-		}
 	}
 
 	private void newRound() {

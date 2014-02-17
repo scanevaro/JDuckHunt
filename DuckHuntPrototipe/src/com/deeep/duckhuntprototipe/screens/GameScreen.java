@@ -120,6 +120,7 @@ public class GameScreen implements Screen {
 			}
 			break;
 		case World.WORLD_STATE_ROUND_PAUSE:
+			stateTime = 0;
 			shots = 3;
 			break;
 		case World.WORLD_STATE_GAME_OVER_1:
@@ -139,7 +140,7 @@ public class GameScreen implements Screen {
 	private void updateScore() {
 		if (world.score != lastScore) {
 			lastScore = world.score;
-			
+
 			if (String.valueOf(lastScore).length() == 3)
 				scoreString = "000" + String.valueOf(lastScore);
 			else if (String.valueOf(lastScore).length() == 4)
@@ -292,6 +293,36 @@ public class GameScreen implements Screen {
 			Assets.font.draw(batcher, "FLY AWAY", 480 / 2
 					- Assets.presentFlyAway.getRegionWidth() / 2 - 15,
 					Gdx.graphics.getHeight() / 2 + 45);
+		}
+
+		if (world.state == World.WORLD_STATE_PERFECT_ROUND) {
+			if (stateTime < 5)
+				presentRoundEnd();
+
+			if (stateTime > 5) {
+				batcher.draw(Assets.presentFlyAway,
+						480 / 2 - Assets.presentFlyAway.getRegionWidth(),
+						320 / 2 + 30, Assets.presentFlyAway.getRegionWidth()
+								+ Assets.presentFlyAway.getRegionWidth(),
+						Assets.presentFlyAway.getRegionHeight()
+								+ Assets.presentFlyAway.getRegionHeight());
+				Assets.font.setScale(0.45f, 0.5f);
+				Assets.font.draw(batcher, "Perfect", 480 / 2
+						- Assets.presentFlyAway.getRegionWidth() / 2 - 15,
+						Gdx.graphics.getHeight() / 2 + 45);
+			}
+		}
+
+		if (world.state == World.WORLD_STATE_ROUND_END)
+			presentRoundEnd();
+	}
+
+	private void presentRoundEnd() {
+		for (int i = 0; i < world.ducks.size(); i++) {
+			if (world.ducks.get(i).state == Duck.DUCK_STATE_DEAD) {
+				world.ducks.get(i).uiTexture = Assets.uiDucks.getKeyFrame(
+						stateTime, true);
+			}
 		}
 	}
 
