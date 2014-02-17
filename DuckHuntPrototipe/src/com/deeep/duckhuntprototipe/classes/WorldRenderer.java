@@ -47,10 +47,18 @@ public class WorldRenderer {
 
 	// also draws the background color
 	private void clearScreen() {
-		if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY))
-			Gdx.gl.glClearColor(0.392156f, 0.686274f, 1, 1);
-		else
-			Gdx.gl.glClearColor(1, 0.823529f, 0.3764705f, 1);
+		if (world.gameMode == World.GAME_MODE_1) {
+			if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY))
+				Gdx.gl.glClearColor(0.392156f, 0.686274f, 1, 1);
+			else
+				Gdx.gl.glClearColor(1, 0.823529f, 0.3764705f, 1);
+		} else {
+			if (!(world.ducks.get(world.duckCount).state == Duck.DUCK_STATE_FLY_AWAY)
+					|| !(world.ducks.get(world.duckCount + 1).state == Duck.DUCK_STATE_FLY_AWAY))
+				Gdx.gl.glClearColor(0.392156f, 0.686274f, 1, 1);
+			else
+				Gdx.gl.glClearColor(1, 0.823529f, 0.3764705f, 1);
+		}
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	}

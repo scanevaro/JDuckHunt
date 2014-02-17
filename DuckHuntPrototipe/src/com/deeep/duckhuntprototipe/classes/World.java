@@ -26,7 +26,6 @@ public class World {
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_ROUND_START = 1;
 	public static final int WORLD_STATE_ROUND_PAUSE = 2;
-	public static final int WORLD_STATE_NEW_ROUND = 3;
 	public static final int WORLD_STATE_ROUND_END = 4;
 	public static final int WORLD_STATE_COUNTING_DUCKS = 5;
 	public static final int WORLD_STATE_GAME_OVER_1 = 6;
@@ -62,6 +61,9 @@ public class World {
 
 		dog = new Dog(0, 1.9f, this);
 		this.score = 0;
+
+		Duck.duck_velocity_x = 3;
+		Duck.duck_velocity_y = 6;
 		generateRound();
 	}
 
@@ -74,8 +76,6 @@ public class World {
 			ducks.add(duck);
 		}
 
-		// ducks.add(new Duck(5, 3.5f));
-
 		duckCount = 0;
 		duckCountRoundEnd = 0;
 		stateTime = 0;
@@ -87,9 +87,6 @@ public class World {
 		switch (state) {
 		case WORLD_STATE_ROUND_START:
 			stateRoundStart(deltaTime);
-			break;
-		case WORLD_STATE_NEW_ROUND:
-			stateNewRound(deltaTime);
 			break;
 		case WORLD_STATE_RUNNING:
 			stateRunning(deltaTime);
@@ -159,7 +156,7 @@ public class World {
 	private void stateRoundEnd() {
 		if (stateTime > 5) {
 			newRound();
-			state = WORLD_STATE_NEW_ROUND;
+			state = WORLD_STATE_ROUND_START;
 			dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
 			dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4,
 					1.9f);
@@ -169,7 +166,7 @@ public class World {
 	private void statePerfectRound() {
 		if (stateTime > 9) {
 			newRound();
-			state = WORLD_STATE_NEW_ROUND;
+			state = WORLD_STATE_ROUND_START;
 			dog.state = Dog.DOG_STATE_WALKING_NEW_ROUND;
 			dog.position.set(World.WORLD_WIDTH / 2 - World.WORLD_WIDTH / 4,
 					1.9f);
@@ -282,6 +279,9 @@ public class World {
 				duck.hit();
 
 				score += Duck.SCORE;
+			} else if (Gdx.input.justTouched() && GameScreen.shots == 0
+					&& duck.state == Duck.DUCK_STATE_FLYING) {
+				duck.state = Duck.DUCK_STATE_FLY_AWAY;
 			}
 
 			Duck duck2 = ducks.get(duckCount + 1);
@@ -290,6 +290,9 @@ public class World {
 				duck2.hit();
 
 				score += Duck.SCORE;
+			} else if (Gdx.input.justTouched() && GameScreen.shots == 0
+					&& duck2.state == Duck.DUCK_STATE_FLYING) {
+				duck2.state = Duck.DUCK_STATE_FLY_AWAY;
 			}
 		}
 	}
@@ -330,7 +333,10 @@ public class World {
 	}
 
 	private void newRound() {
+		Duck.duck_velocity_x += 0.5f;
+		Duck.duck_velocity_y += 0.5f;
+
 		generateRound();
-		// round++;
+		GameScreen.round++;
 	}
 }

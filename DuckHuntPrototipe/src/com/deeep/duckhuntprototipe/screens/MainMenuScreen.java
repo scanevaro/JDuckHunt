@@ -62,17 +62,17 @@ public class MainMenuScreen implements Screen {
 				return;
 			}
 
-			// if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
-			// if (menuCursor == 70) {
-			// game.setScreen(new GameScreen(game, World.GAME_MODE_2));
-			// if (Assets.duckHunt.isPlaying())
-			// Assets.duckHunt.stop();
-			// } else {
-			// menuCursor = 70;
-			// Assets.playSound(Assets.shoot);
-			// }
-			// return;
-			// }
+			if (playMode2Bounds.contains(touchPoint.x, touchPoint.y)) {
+				if (menuCursor == 70) {
+					game.setScreen(new GameScreen(game, World.GAME_MODE_2));
+					if (Assets.duckHunt.isPlaying())
+						Assets.duckHunt.stop();
+				} else {
+					menuCursor = 70;
+					Assets.playSound(Assets.shoot);
+				}
+				return;
+			}
 		}
 	}
 
@@ -108,10 +108,9 @@ public class MainMenuScreen implements Screen {
 
 		Assets.font.setScale(0.5f, 0.5f);
 		Assets.font.draw(batcher, "High Score ",
-				480 / 2 - Assets.gameMode2.getRegionWidth() / 2 - 40,
-				menuCursor - 60);
+				480 / 2 - Assets.gameMode2.getRegionWidth() / 2 - 40, 40);
 		Assets.font.draw(batcher, String.valueOf(Settings.highscore), 480 / 2
-				- Assets.gameMode2.getRegionWidth() / 2 + 100, menuCursor - 60);
+				- Assets.gameMode2.getRegionWidth() / 2 + 100, 40);
 
 		batcher.end();
 	}

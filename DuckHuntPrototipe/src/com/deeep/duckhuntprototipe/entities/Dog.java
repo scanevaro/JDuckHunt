@@ -141,7 +141,11 @@ public class Dog extends GameObject {
 		if (stateTime > 1) {
 			state = DOG_STATE_HIDDEN;
 			world.state = World.WORLD_STATE_RUNNING;
-			world.duckCount++;
+
+			if (world.gameMode == World.GAME_MODE_2)
+				world.duckCount += 2;
+			else
+				world.duckCount++;
 		}
 
 		if (ducksHit == 1)
@@ -161,7 +165,10 @@ public class Dog extends GameObject {
 		if (stateTime > 3) {
 			state = DOG_STATE_HIDDEN;
 			world.state = World.WORLD_STATE_RUNNING;
-			world.duckCount++;
+			if (world.gameMode == World.GAME_MODE_2)
+				world.duckCount += 2;
+			else
+				world.duckCount++;
 		}
 
 		texture = Assets.dogLaughing.getKeyFrame(stateTime, true);
