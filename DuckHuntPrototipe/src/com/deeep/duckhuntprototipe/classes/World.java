@@ -275,7 +275,8 @@ public class World {
 		} else {
 			Duck duck = ducks.get(duckCount);
 			if (Gdx.input.justTouched()
-					&& duck.bounds.contains(touchPoint.x, touchPoint.y)) {
+					&& duck.bounds.contains(touchPoint.x, touchPoint.y)
+					&& duck.state == Duck.DUCK_STATE_FLYING) {
 				duck.hit();
 
 				score += Duck.SCORE;
@@ -286,7 +287,8 @@ public class World {
 
 			Duck duck2 = ducks.get(duckCount + 1);
 			if (Gdx.input.justTouched()
-					&& duck2.bounds.contains(touchPoint.x, touchPoint.y)) {
+					&& duck2.bounds.contains(touchPoint.x, touchPoint.y)
+					&& duck2.state == Duck.DUCK_STATE_FLYING) {
 				duck2.hit();
 
 				score += Duck.SCORE;

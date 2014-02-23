@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>DuckHuntPrototipe-desktop</name>
+	<name>JDuckHunt-desktop</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,7 +18,13 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/DuckHuntPrototipe-android/assets</locationURI>
+			<locationURI>copy_PARENT/DuckHuntPrototipe-android/assets</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-2-PROJECT_LOC%7D/git/DuckHuntPrototipe</value>
+		</variable>
+	</variableList>
 </projectDescription>
