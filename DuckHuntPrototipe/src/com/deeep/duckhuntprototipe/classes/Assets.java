@@ -10,8 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class Assets {
-	public static TextureRegion backgroundRegion;
 	public static TextureAtlas items;
+
+	public static TextureRegion backgroundRegion;
 	public static TextureRegion pause;
 	public static TextureRegion ready;
 	public static TextureRegion duckHit;
@@ -35,7 +36,15 @@ public class Assets {
 	public static TextureRegion presentFlyAway;
 	public static TextureRegion ui0Shots;
 
-	public static Animation duckFly;
+	public static Animation duckFlyRightBlue;
+	public static Animation duckFlyRightBlack;
+	public static Animation duckFlyRightRed;
+	public static Animation duckFlyTopBlue;
+	public static Animation duckFlyTopBlack;
+	public static Animation duckFlyTopRed;
+	public static Animation duckFlyUpBlue;
+	public static Animation duckFlyUpBlack;
+	public static Animation duckFlyUpRed;
 	public static Animation dogWalking;
 	public static Animation dogJumping;
 	public static Animation dogLaughing;
@@ -89,9 +98,42 @@ public class Assets {
 		dogLaughing = new Animation(0.1f,
 				((TextureRegion) items.findRegion("dogLaugh1")),
 				((TextureRegion) items.findRegion("dogLaugh2")));
-		duckFly = new Animation(0.2f,
-				((TextureRegion) items.findRegion("duckFlyRight1")),
-				((TextureRegion) items.findRegion("duckFlyRight2")));
+		duckFlyRightBlue = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyRightBlue1")),
+				((TextureRegion) items.findRegion("duckFlyRightBlue2")),
+				((TextureRegion) items.findRegion("duckFlyRightBlue3")));
+		duckFlyRightBlack = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyRightBlack1")),
+				((TextureRegion) items.findRegion("duckFlyRightBlack2")),
+				((TextureRegion) items.findRegion("duckFlyRightBlack3")));
+		duckFlyRightRed = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyRightRed1")),
+				((TextureRegion) items.findRegion("duckFlyRightRed2")),
+				((TextureRegion) items.findRegion("duckFlyRightRed3")));
+		duckFlyTopBlue = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyTopBlue1")),
+				((TextureRegion) items.findRegion("duckFlyTopBlue2")),
+				((TextureRegion) items.findRegion("duckFlyTopBlue3")));
+		duckFlyTopBlack = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyTopBlack1")),
+				((TextureRegion) items.findRegion("duckFlyTopBlack2")),
+				((TextureRegion) items.findRegion("duckFlyTopBlack3")));
+		duckFlyTopRed = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyTopRed1")),
+				((TextureRegion) items.findRegion("duckFlyTopRed2")),
+				((TextureRegion) items.findRegion("duckFlyTopRed3")));
+		duckFlyUpBlue = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyUpBlue1")),
+				((TextureRegion) items.findRegion("duckFlyUpBlue2")),
+				((TextureRegion) items.findRegion("duckFlyUpBlue3")));
+		duckFlyUpBlack = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyUpBlack1")),
+				((TextureRegion) items.findRegion("duckFlyUpBlack2")),
+				((TextureRegion) items.findRegion("duckFlyUpBlack3")));
+		duckFlyUpRed = new Animation(0.2f,
+				((TextureRegion) items.findRegion("duckFlyUpRed1")),
+				((TextureRegion) items.findRegion("duckFlyUpRed2")),
+				((TextureRegion) items.findRegion("duckFlyUpRed3")));
 		uiDucks = new Animation(0.2f,
 				((TextureRegion) items.findRegion("uiWhiteDuck")),
 				((TextureRegion) items.findRegion("uiRedDuck")));

@@ -6,7 +6,7 @@ import com.deeep.duckhuntprototipe.classes.Assets;
 import com.deeep.duckhuntprototipe.classes.Settings;
 import com.deeep.duckhuntprototipe.screens.MainMenuScreen;
 
-public class DuckHuntPrototipe extends Game {
+public class JDuckHunt extends Game {
 	FPSLogger fps;
 
 	@Override

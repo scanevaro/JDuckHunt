@@ -95,14 +95,21 @@ public class WorldRenderer {
 			float width = Duck.DUCK_WIDTH;
 			float height = Duck.DUCK_HEIGHT;
 
-			float side = duck.velocity.x < 0 ? -1 : 1;
+			float sideY = 0;
+			if (duck.velocity.y < 0
+					&& Math.abs(duck.velocity.y) > duck.velocity.x)
+				sideY = -1;
+			else
+				sideY = 1;
+
+			float sideX = duck.velocity.x < 0 ? -1 : 1;
 			if (texture != null)
-				if (side < 0)
-					batch.draw(texture, x + 0.5f, y - 0.5f, side * width,
-							height);
+				if (sideX < 0)
+					batch.draw(texture, x + 0.5f, y - 0.5f, sideX * width,
+							sideY * height);
 				else
-					batch.draw(texture, x - 0.5f, y - 0.5f, side * width,
-							height);
+					batch.draw(texture, x - 0.5f, y - 0.5f, sideX * width,
+							sideY * height);
 		}
 	}
 }

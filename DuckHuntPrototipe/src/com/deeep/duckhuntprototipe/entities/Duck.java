@@ -4,10 +4,15 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.deeep.duckhuntprototipe.classes.Assets;
+import com.deeep.duckhuntprototipe.classes.DucksTextures;
 import com.deeep.duckhuntprototipe.classes.DynamicGameObject;
 import com.deeep.duckhuntprototipe.classes.World;
 
 public class Duck extends DynamicGameObject {
+
+	public static final int BLUE_DUCK = 0;
+	public static final int BLACK_DUCK = 1;
+	public static final int RED_DUCK = 2;
 
 	public static final int DUCK_STATE_FLYING = 0;
 	public static final int DUCK_STATE_HIT = 1;
@@ -23,6 +28,7 @@ public class Duck extends DynamicGameObject {
 	public static float duck_velocity_y = 6;
 	public static float duck_velocity_x = 3;
 
+	public int type;
 	public TextureRegion texture;
 	public TextureRegion uiTexture;
 	public float side;
@@ -46,6 +52,13 @@ public class Duck extends DynamicGameObject {
 		soundID = -1;
 		rand = new Random();
 		uiTexture = Assets.uiWhiteDuck;
+
+		if (rand.nextFloat() > 0.5f)
+			type = BLUE_DUCK;
+		else if (rand.nextFloat() > 0.5f)
+			type = BLACK_DUCK;
+		else
+			type = RED_DUCK;
 	}
 
 	public void update(float deltaTime) {
@@ -81,6 +94,8 @@ public class Duck extends DynamicGameObject {
 	}
 
 	private void stateFlying(float deltaTime) {
+		texture = DucksTextures.getTexture(stateTime, type, velocity);
+
 		if (position.y < 2.9f)
 			velocity.y = Math.abs(velocity.y);
 		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
@@ -155,8 +170,6 @@ public class Duck extends DynamicGameObject {
 				lastTimeSaved2 = stateTime;
 			}
 		}
-
-		texture = Assets.duckFly.getKeyFrame(stateTime, true);
 	}
 
 	private void uiStateFlying(float deltaTime) {

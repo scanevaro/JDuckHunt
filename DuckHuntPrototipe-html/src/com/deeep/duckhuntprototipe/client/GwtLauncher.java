@@ -1,6 +1,6 @@
 package com.deeep.duckhuntprototipe.client;
 
-import com.deeep.duckhuntprototipe.DuckHuntPrototipe;
+import com.deeep.duckhuntprototipe.JDuckHunt;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
@@ -14,6 +14,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new DuckHuntPrototipe();
+		return new JDuckHunt();
 	}
 }
