@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
 
 			@Override
 			public void ducks() {
-				Assets.ducks.play();
+				
 			}
 
 		};

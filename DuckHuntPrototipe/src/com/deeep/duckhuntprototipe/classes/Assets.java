@@ -16,7 +16,6 @@ public class Assets {
 	public static TextureRegion pause;
 	public static TextureRegion ready;
 	public static TextureRegion duckHit;
-	public static TextureRegion duckFalling;
 	public static TextureRegion title;
 	public static TextureRegion gameMode1;
 	public static TextureRegion gameMode2;
@@ -35,6 +34,12 @@ public class Assets {
 	public static TextureRegion dogDucksFound;
 	public static TextureRegion presentFlyAway;
 	public static TextureRegion ui0Shots;
+	public static TextureRegion duckFallingBlue;
+	public static TextureRegion duckFallingBlack;
+	public static TextureRegion duckFallingRed;
+	public static TextureRegion duckHitBlue;
+	public static TextureRegion duckHitBlack;
+	public static TextureRegion duckHitRed;
 
 	public static Animation duckFlyRightBlue;
 	public static Animation duckFlyRightBlack;
@@ -59,7 +64,6 @@ public class Assets {
 	public static Music gameOver2;
 
 	public static Sound shoot;
-	public static Sound ducks;
 	public static Sound dogBark;
 	public static Sound miss;
 	public static Sound dogLaughingSnd;
@@ -138,9 +142,15 @@ public class Assets {
 				((TextureRegion) items.findRegion("uiWhiteDuck")),
 				((TextureRegion) items.findRegion("uiRedDuck")));
 
+		duckFallingBlue = items.findRegion("duckFallingBlue");
+		duckFallingBlack = items.findRegion("duckFallingBlack");
+		duckFallingRed = items.findRegion("duckFallingRed");
+		duckHitBlue = items.findRegion("duckHitBlue");
+		duckHitBlack = items.findRegion("duckHitBlack");
+		duckHitRed = items.findRegion("duckHitRed");
+
 		ui0Shots = items.findRegion("ui0Shots1");
 		duckHit = items.findRegion("duckHit");
-		duckFalling = items.findRegion("duckFalling");
 		title = items.findRegion("title");
 		gameMode1 = items.findRegion("gameMode1");
 		gameMode2 = items.findRegion("gameMode2");
@@ -182,7 +192,6 @@ public class Assets {
 				.internal("data/sounds/gameOver2.mp3"));
 
 		shoot = Gdx.audio.newSound(Gdx.files.internal("data/sounds/blast.mp3"));
-		ducks = Gdx.audio.newSound(Gdx.files.internal("data/ducks.wav"));
 		dogBark = Gdx.audio
 				.newSound(Gdx.files.internal("data/sounds/bark.mp3"));
 		miss = Gdx.audio.newSound(Gdx.files.internal("data/sounds/miss.mp3"));

@@ -16,6 +16,7 @@ public class WorldRenderer {
 	OrthographicCamera cam;
 	SpriteBatch batch;
 	TextureRegion background;
+	private int sideX;
 
 	public WorldRenderer(SpriteBatch batch, World world) {
 		this.world = world;
@@ -90,26 +91,17 @@ public class WorldRenderer {
 			Duck duck = world.ducks.get(i);
 
 			TextureRegion texture = duck.texture;
-			float x = duck.position.x;
-			float y = duck.position.y;
-			float width = Duck.DUCK_WIDTH;
-			float height = Duck.DUCK_HEIGHT;
 
-			float sideY = 0;
-			if (duck.velocity.y < 0
-					&& Math.abs(duck.velocity.y) > duck.velocity.x)
-				sideY = -1;
-			else
-				sideY = 1;
-
-			float sideX = duck.velocity.x < 0 ? -1 : 1;
+			sideX = duck.velocity.x < 0 ? -1 : 1;
 			if (texture != null)
 				if (sideX < 0)
-					batch.draw(texture, x + 0.5f, y - 0.5f, sideX * width,
-							sideY * height);
+					batch.draw(texture, duck.position.x + 0.5f,
+							duck.position.y - 0.5f, sideX * Duck.DUCK_WIDTH,
+							Duck.DUCK_HEIGHT);
 				else
-					batch.draw(texture, x - 0.5f, y - 0.5f, sideX * width,
-							sideY * height);
+					batch.draw(texture, duck.position.x - 0.5f,
+							duck.position.y - 0.5f, sideX * Duck.DUCK_WIDTH,
+							Duck.DUCK_HEIGHT);
 		}
 	}
 }

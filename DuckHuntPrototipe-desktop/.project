@@ -18,7 +18,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<locationURI>copy_PARENT/DuckHuntPrototipe-android/assets</locationURI>
+			<location>C:/Users/Seba/git/DuckHuntPrototipe/DuckHuntPrototipe-android/assets</location>
 		</link>
 	</linkedResources>
 	<variableList>

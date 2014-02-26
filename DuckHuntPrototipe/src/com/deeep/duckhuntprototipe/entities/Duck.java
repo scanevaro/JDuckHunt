@@ -94,7 +94,7 @@ public class Duck extends DynamicGameObject {
 	}
 
 	private void stateFlying(float deltaTime) {
-		texture = DucksTextures.getTexture(stateTime, type, velocity);
+		texture = DucksTextures.getFlyingTexture(stateTime, type, velocity);
 
 		if (position.y < 2.9f)
 			velocity.y = Math.abs(velocity.y);
@@ -202,6 +202,13 @@ public class Duck extends DynamicGameObject {
 	}
 
 	private void stateFalling(float deltaTime) {
+		frames++;
+		if (frames > 4) {
+			texture = DucksTextures.getFallingTexture(type, true);
+			frames = 0;
+		} else
+			texture = DucksTextures.getFallingTexture(type, false);
+
 		velocity.add(0, DUCK_GRAVITY);
 		position.add(velocity.x * deltaTime, velocity.y * deltaTime);
 		bounds.x = position.x - DUCK_WIDTH / 2;
@@ -212,28 +219,22 @@ public class Duck extends DynamicGameObject {
 			Assets.duckFallingSnd.stop(soundID);
 			Assets.hitGround.play();
 		}
-
-		frames++;
-		if (frames > 4) {
-			Assets.duckFalling.flip(true, false);
-			texture = Assets.duckFalling;
-			frames = 0;
-		} else
-			texture = Assets.duckFalling;
-
 	}
 
 	private void stateHit() {
+		texture = DucksTextures.getHitTexture(type);
+		uiTexture = Assets.uiRedDuck;
+
 		if (stateTime > 1.0f) {
 			state = DUCK_STATE_FALLING;
 			velocity.set(0, DUCK_GRAVITY);
 			soundID = Assets.duckFallingSnd.play();
 		}
-		texture = Assets.duckHit;
-		uiTexture = Assets.uiRedDuck;
 	}
 
 	private void stateFlyAway(float deltaTime) {
+		texture = DucksTextures.getUpTexture(type, stateTime);
+
 		position.add(0, deltaTime * 5);
 
 		if (stateTime > 0.125f) {
