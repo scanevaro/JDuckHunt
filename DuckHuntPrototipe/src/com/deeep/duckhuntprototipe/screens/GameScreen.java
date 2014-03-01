@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
 
 			@Override
 			public void ducks() {
-				
+
 			}
 
 		};
@@ -81,22 +81,22 @@ public class GameScreen implements Screen {
 			deltaTime = 0.1f;
 
 		switch (state) {
-		case GAME_READY:
-			updateReady(deltaTime);
-			break;
-		// case ROUND_START
-		// case COUNT_DUCKS
-		// case NEXT_ROUND
-		// case GAME_OVER
-		case GAME_RUNNING:
-			updateRunning(deltaTime);
-			break;
-		case GAME_OVER_1:
-			updateGameOver1();
-			break;
-		case GAME_OVER_2:
-			updateGameOver2(deltaTime);
-			break;
+			case GAME_READY:
+				updateReady(deltaTime);
+				break;
+			// case ROUND_START
+			// case COUNT_DUCKS
+			// case NEXT_ROUND
+			// case GAME_OVER
+			case GAME_RUNNING:
+				updateRunning(deltaTime);
+				break;
+			case GAME_OVER_1:
+				updateGameOver1();
+				break;
+			case GAME_OVER_2:
+				updateGameOver2(deltaTime);
+				break;
 		}
 
 		world.update(deltaTime);
@@ -109,31 +109,31 @@ public class GameScreen implements Screen {
 
 	private void updateRunning(float deltaTime) {
 		switch (world.state) {
-		case World.WORLD_STATE_RUNNING:
-			if (Gdx.input.justTouched()) {
-				if (shots > 0) {
-					guiCam.unproject(touchPoint.set(Gdx.input.getX(),
-							Gdx.input.getY(), 0));
-					Assets.shoot.play();
-					shots--;
+			case World.WORLD_STATE_RUNNING:
+				if (Gdx.input.justTouched()) {
+					if (shots > 0) {
+						guiCam.unproject(touchPoint.set(Gdx.input.getX(),
+								Gdx.input.getY(), 0));
+						Assets.shoot.play();
+						shots--;
+					}
 				}
-			}
-			break;
-		case World.WORLD_STATE_ROUND_PAUSE:
-			stateTime = 0;
-			shots = 3;
-			break;
-		case World.WORLD_STATE_COUNTING_DUCKS:
-			stateTime = 0;
-			break;
-		case World.WORLD_STATE_ROUND_START:
-			state = GAME_READY;
-			break;
-		case World.WORLD_STATE_GAME_OVER_1:
-			stateTime = 0;
-			state = GAME_OVER_1;
-			Assets.gameOver1.play();
-			break;
+				break;
+			case World.WORLD_STATE_ROUND_PAUSE:
+				stateTime = 0;
+				shots = 3;
+				break;
+			case World.WORLD_STATE_COUNTING_DUCKS:
+				stateTime = 0;
+				break;
+			case World.WORLD_STATE_ROUND_START:
+				state = GAME_READY;
+				break;
+			case World.WORLD_STATE_GAME_OVER_1:
+				stateTime = 0;
+				state = GAME_OVER_1;
+				Assets.gameOver1.play();
+				break;
 		}
 		// ApplicationType appType = Gdx.app.getType();
 
@@ -185,20 +185,20 @@ public class GameScreen implements Screen {
 		drawUI(deltaTime);
 
 		switch (state) {
-		case GAME_READY:
-			presentReady();
-			break;
-		// case ROUND_START
-		// case COUNT_DUCKS
-		// case NEXT_ROUND
-		// case GAME_OVER
-		case GAME_RUNNING:
-			presentRunning();
-			break;
-		case GAME_OVER_1:
-		case GAME_OVER_2:
-			presentGameOver();
-			break;
+			case GAME_READY:
+				presentReady();
+				break;
+			// case ROUND_START
+			// case COUNT_DUCKS
+			// case NEXT_ROUND
+			// case GAME_OVER
+			case GAME_RUNNING:
+				presentRunning();
+				break;
+			case GAME_OVER_1:
+			case GAME_OVER_2:
+				presentGameOver();
+				break;
 		}
 
 		batcher.end();
@@ -207,18 +207,18 @@ public class GameScreen implements Screen {
 	private void drawUI(float deltaTime) {
 		TextureRegion texture = null;
 		switch (shots) {
-		case 3:
-			texture = Assets.ui3Shots;
-			break;
-		case 2:
-			texture = Assets.ui2Shots;
-			break;
-		case 1:
-			texture = Assets.ui1Shots;
-			break;
-		default:
-			texture = Assets.ui0Shots;
-			break;
+			case 3:
+				texture = Assets.ui3Shots;
+				break;
+			case 2:
+				texture = Assets.ui2Shots;
+				break;
+			case 1:
+				texture = Assets.ui1Shots;
+				break;
+			default:
+				texture = Assets.ui0Shots;
+				break;
 		}
 
 		batcher.draw(
