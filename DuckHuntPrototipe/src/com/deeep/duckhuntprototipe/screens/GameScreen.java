@@ -191,7 +191,6 @@ public class GameScreen implements Screen {
 			// case ROUND_START
 			// case COUNT_DUCKS
 			// case NEXT_ROUND
-			// case GAME_OVER
 			case GAME_RUNNING:
 				presentRunning();
 				break;

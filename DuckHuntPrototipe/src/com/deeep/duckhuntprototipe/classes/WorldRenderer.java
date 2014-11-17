@@ -1,10 +1,13 @@
 package com.deeep.duckhuntprototipe.classes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.deeep.duckhuntprototipe.entities.Dog;
 import com.deeep.duckhuntprototipe.entities.Duck;
 
@@ -16,6 +19,7 @@ public class WorldRenderer {
 	OrthographicCamera cam;
 	SpriteBatch batch;
 	TextureRegion background;
+	ShapeRenderer shapeRenderer;
 	private int sideX;
 
 	public WorldRenderer(SpriteBatch batch, World world) {
@@ -23,6 +27,8 @@ public class WorldRenderer {
 		this.cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT);
 		this.cam.position.set(FRUSTUM_WIDTH / 2, FRUSTUM_HEIGHT / 2, 0);
 		this.batch = batch;
+
+		shapeRenderer = new ShapeRenderer();
 	}
 
 	public void render() {
@@ -95,13 +101,22 @@ public class WorldRenderer {
 			sideX = duck.velocity.x < 0 ? -1 : 1;
 			if (texture != null)
 				if (sideX < 0)
-					batch.draw(texture, duck.position.x + 0.5f,
-							duck.position.y - 0.5f, sideX * Duck.DUCK_WIDTH,
-							Duck.DUCK_HEIGHT);
+					batch.draw(texture, duck.position.x + Duck.DUCK_WIDTH / 2,
+							duck.position.y - Duck.DUCK_HEIGHT / 2, sideX
+									* Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
 				else
-					batch.draw(texture, duck.position.x - 0.5f,
-							duck.position.y - 0.5f, sideX * Duck.DUCK_WIDTH,
-							Duck.DUCK_HEIGHT);
+					batch.draw(texture, duck.position.x - Duck.DUCK_WIDTH / 2,
+							duck.position.y - Duck.DUCK_HEIGHT / 2, sideX
+									* Duck.DUCK_WIDTH, Duck.DUCK_HEIGHT);
+
+			{// Debug Duck
+				shapeRenderer.setProjectionMatrix(cam.combined);
+				shapeRenderer.begin(ShapeType.Line);
+				shapeRenderer.setColor(Color.RED);
+				shapeRenderer.rect(duck.bounds.x, duck.bounds.y,
+						duck.bounds.width, duck.bounds.height);
+				shapeRenderer.end();
+			}
 		}
 	}
 }
